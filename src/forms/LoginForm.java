@@ -15,7 +15,8 @@ public class LoginForm extends JFrame implements ActionListener {
     private static LoginForm instance;
     private JButton loginButton;
     private JTextField usernameTextField;
-    private JPasswordField passwordTextField;
+    private JTextField passwordTextField;
+    private JLabel invalidLoginLabel;
 
     //Private Constructor
     private LoginForm(int width, int height) {
@@ -39,11 +40,18 @@ public class LoginForm extends JFrame implements ActionListener {
         passwordLabel.setHorizontalAlignment(JLabel.CENTER); //Center the label horizontally within its space.
         passwordLabel.setBounds(48, 150, 150, 50); //Place the label within the form.
 
+        invalidLoginLabel = new JLabel("Error: Username and / or Password provided is invalid."); //Create the label for password.
+        invalidLoginLabel.setForeground(new Color(255, 0, 0)); //Set color to white
+        invalidLoginLabel.setFont(new Font("Montserrat", Font.BOLD, 14)); //Set Font style.
+        invalidLoginLabel.setVerticalAlignment(JLabel.CENTER); //Center the label vertically within its space.
+        invalidLoginLabel.setHorizontalAlignment(JLabel.CENTER); //Center the label horizontally within its space.
+        invalidLoginLabel.setBounds(5, 420, 400, 20); //Place the label within the form.
+
         //Text Fields:
         usernameTextField = new JTextField();
         usernameTextField.setBounds(230, 105, 120, 30);
 
-        passwordTextField = new JPasswordField();
+        passwordTextField = new JTextField();
         passwordTextField.setBounds(230, 165, 120, 30);
 
         //Button:
@@ -54,7 +62,7 @@ public class LoginForm extends JFrame implements ActionListener {
         loginButton.setHorizontalAlignment(JLabel.CENTER); //Center the button horizontally within its space.
         loginButton.setFocusable(false); //Remove the box around the text within the button.
         loginButton.setBackground(Color.lightGray); //Set background to light gray color.
-        loginButton.setBorder(loginButtonBorder); //Set border to loginBUttonBorder
+        loginButton.setBorder(loginButtonBorder); //Set border to loginButtonBorder
         loginButton.setBounds(160, 350, 100, 40); //Place the button within the form.
         loginButton.addActionListener(this); //Add an event listener for a clicking event.
 
@@ -72,27 +80,44 @@ public class LoginForm extends JFrame implements ActionListener {
         this.add(usernameTextField); //Add the text field for Username to the form.
         this.add(passwordTextField); //Add the text field for Password to the form.
         this.add(loginButton); //Add the login button to the form.
+        this.add(invalidLoginLabel); //Add the label for invalid login to the form.
+        invalidLoginLabel.setVisible(false); // Make the invalid login lable invisible by default.
         this.setVisible(true); //Makes the form visible upon instantiation.
 
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
+
         //If login button was clicked:
         if(e.getSource() == loginButton){
-            this.setVisible(false); //Hide the form.
-            Main.login(usernameTextField.getText(), passwordTextField.getText()); //Call the login function.
-            removeLoginForm(); // Clear the static variable.
-            this.dispose(); //Dispose of the current frame object.
+
+            if(Main.login(usernameTextField.getText(), passwordTextField.getText())){
+
+                //If login is successful:
+                this.setVisible(false); //Hide the form.
+                removeLoginForm(); // Clear the static variable.
+                this.dispose(); //Dispose of the current frame object.
+
+            }else{
+
+                //If login fails:
+                invalidLoginLabel.setVisible(true); //Display the error message through the label.
+
+            }
+
         }
+
     }
 
     //Public method to retrieve the single instance
     public static LoginForm getLoginForm(int width, int height){
+
         if(instance == null){
             instance = new LoginForm(width, height);
         }
         return instance;
+
     }
 
     //Private method to destroy the single instance
