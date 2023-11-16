@@ -15,7 +15,7 @@ public class LoginForm extends JFrame implements ActionListener {
     private static LoginForm instance;
     private JButton loginButton;
     private JTextField usernameTextField;
-    private JTextField passwordTextField;
+    private JPasswordField passwordTextField;
     private JLabel invalidLoginLabel;
 
     //Private Constructor
@@ -51,7 +51,7 @@ public class LoginForm extends JFrame implements ActionListener {
         usernameTextField = new JTextField();
         usernameTextField.setBounds(230, 105, 120, 30);
 
-        passwordTextField = new JTextField();
+        passwordTextField = new JPasswordField();
         passwordTextField.setBounds(230, 165, 120, 30);
 
         //Button:
@@ -91,21 +91,15 @@ public class LoginForm extends JFrame implements ActionListener {
 
         //If login button was clicked:
         if(e.getSource() == loginButton){
-
             if(Main.login(usernameTextField.getText(), passwordTextField.getText())){
-
                 //If login is successful:
                 this.setVisible(false); //Hide the form.
                 removeLoginForm(); // Clear the static variable.
                 this.dispose(); //Dispose of the current frame object.
-
             }else{
-
                 //If login fails:
                 invalidLoginLabel.setVisible(true); //Display the error message through the label.
-
             }
-
         }
 
     }

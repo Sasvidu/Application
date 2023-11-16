@@ -10,6 +10,7 @@ public class HomeFrame extends JFrame {
 
     //Private Constructor
     private HomeFrame(int width, int height){
+
         //Window:
         this.setTitle("Home");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -19,14 +20,17 @@ public class HomeFrame extends JFrame {
         this.getContentPane().setBackground(Color.gray);
 
         this.setVisible(true);
+
     }
 
     //Public method to retrieve the single instance
     public static HomeFrame getHomeFrame(int width, int height){
+
         if(instance == null){
             instance = new HomeFrame(width, height);
         }
         return instance;
+
     }
 
 }

@@ -1,0 +1,25 @@
+package data;
+
+public class RootCanalTherapy extends Treatment{
+
+    private static RootCanalTherapy instance;
+
+    //Parameterized Constructor to initialize the attributes upon instantiation:
+    private RootCanalTherapy(String treatmentType, float fee, short timeInMinutes) {
+
+        this.treatmentType = treatmentType;
+        this.fee = fee;
+        this.timeInMinutes = timeInMinutes;
+
+    }
+
+    public RootCanalTherapy getRootCanalTherapy(String treatmentType, float fee, short timeInMinutes){
+
+        if(instance == null){
+            instance = new RootCanalTherapy(treatmentType, fee, timeInMinutes);
+        }
+        return instance;
+
+    }
+
+}
