@@ -1,7 +1,7 @@
 package com.sasvidu;
 
 import forms.*;
-import data.User;
+import data.*;
 
 public class Main {
 
@@ -12,21 +12,30 @@ public class Main {
     static final int homeFrameHeight = 1080;
 
     //Declare the users of the system:
-    static final User[] users = {new User("Gayani", "t00thCAR3@2023"), new User("Ranasinghe", "123")};
+    static final UserCollection users = UserCollection.getUserCollection(new User[]{new User("Gayani", "t00thCAR3@2023"), new User("Ranasinghe", "123"), new User("Sasvidu", "2007")});
+
 
     public static void main(String[] args){
         LoginForm.getLoginForm(loginFormWidth, loginFormHeight);
     }
 
+
     public static boolean login(String username, String password){
         //TIme Complexity - O(n)
 
-        for(int i = 0; i < users.length; i++){
-            if(username.matches(users[i].getUsername()) && password.matches(users[i].getPassword())) {
+        Iterator userIterator = users.getIterator();
+
+        while(userIterator.hasNext()){
+
+            User currentUser = (User) userIterator.next();
+
+            if(username.matches(currentUser.getUsername()) && password.matches(currentUser.getPassword())) {
                 HomeFrame.getHomeFrame(homeFrameWidth, homeFrameHeight);
                 return true;
             }
+
         }
+
         return false;
 
     }

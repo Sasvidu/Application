@@ -13,7 +13,7 @@ public class RootCanalTherapy extends Treatment{
 
     }
 
-    public RootCanalTherapy getRootCanalTherapy(String treatmentType, float fee, short timeInMinutes){
+    protected static RootCanalTherapy getRootCanalTherapy(String treatmentType, float fee, short timeInMinutes){
 
         if(instance == null){
             instance = new RootCanalTherapy(treatmentType, fee, timeInMinutes);

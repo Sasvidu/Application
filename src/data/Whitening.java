@@ -13,7 +13,7 @@ public class Whitening extends Treatment {
 
     }
 
-    public Whitening getWhitening(String treatmentType, float fee, short timeInMinutes){
+    protected static Whitening getWhitening(String treatmentType, float fee, short timeInMinutes){
 
         if(instance == null){
             instance = new Whitening(treatmentType, fee, timeInMinutes);

@@ -13,7 +13,7 @@ public class NerveFilling extends Treatment{
 
     }
 
-    public NerveFilling getNerveFilling(String treatmentType, float fee, short timeInMinutes){
+    protected static NerveFilling getNerveFilling(String treatmentType, float fee, short timeInMinutes){
 
         if(instance == null){
             instance = new NerveFilling(treatmentType, fee, timeInMinutes);

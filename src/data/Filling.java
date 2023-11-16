@@ -13,7 +13,7 @@ public class Filling extends Treatment{
 
     }
 
-    public Filling getFilling(String treatmentType, float fee, short timeInMinutes){
+    protected static Filling getFilling(String treatmentType, float fee, short timeInMinutes){
 
         if(instance == null){
             instance = new Filling(treatmentType, fee, timeInMinutes);

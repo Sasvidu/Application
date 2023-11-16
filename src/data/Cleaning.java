@@ -13,7 +13,7 @@ public class Cleaning extends Treatment{
 
     }
 
-    public Cleaning getCleaning(String treatmentType, float fee, short timeInMinutes){
+     protected static Cleaning getCleaning(String treatmentType, float fee, short timeInMinutes){
 
         if(instance == null){
             instance = new Cleaning(treatmentType, fee, timeInMinutes);
