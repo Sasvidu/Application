@@ -4,7 +4,7 @@ public abstract class Treatment {
 
     //Define Common attributes for a treatment:
     protected String treatmentType;
-    protected float fee;
+    protected double fee;
     protected short timeInMinutes;
 
     //Define Common methods for a treatment (getters):
@@ -12,7 +12,7 @@ public abstract class Treatment {
         return treatmentType;
     }
 
-    public float getFee() {
+    public double getFee() {
         return fee;
     }
 

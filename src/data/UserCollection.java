@@ -4,7 +4,6 @@ public class UserCollection implements Collection{
 
     //Attributes:
     private static UserCollection instance;
-    private static UserCollectionIterator iteratorInstance;
     private User[] users;
 
     //Define Iterator Class:
@@ -52,10 +51,7 @@ public class UserCollection implements Collection{
     @Override
     public Iterator getIterator() {
 
-        if(iteratorInstance == null){
-            iteratorInstance = new UserCollectionIterator();
-        }
-        return iteratorInstance;
+        return new UserCollectionIterator();
 
     }
 

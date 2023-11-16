@@ -5,7 +5,7 @@ public class RootCanalTherapy extends Treatment{
     private static RootCanalTherapy instance;
 
     //Parameterized Constructor to initialize the attributes upon instantiation:
-    private RootCanalTherapy(String treatmentType, float fee, short timeInMinutes) {
+    private RootCanalTherapy(String treatmentType, double fee, short timeInMinutes) {
 
         this.treatmentType = treatmentType;
         this.fee = fee;
@@ -13,7 +13,7 @@ public class RootCanalTherapy extends Treatment{
 
     }
 
-    protected static RootCanalTherapy getRootCanalTherapy(String treatmentType, float fee, short timeInMinutes){
+    protected static RootCanalTherapy getRootCanalTherapy(String treatmentType, double fee, short timeInMinutes){
 
         if(instance == null){
             instance = new RootCanalTherapy(treatmentType, fee, timeInMinutes);

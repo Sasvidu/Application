@@ -2,6 +2,8 @@ package data;
 
 public class TreatmentFactory {
 
+    private final float cleaningFee = 4000;
+
     private static TreatmentFactory instance;
 
     private TreatmentFactory(){}

@@ -5,7 +5,7 @@ public class Filling extends Treatment{
     private static Filling instance;
 
     //Parameterized Constructor to initialize the attributes upon instantiation:
-    private Filling(String treatmentType, float fee, short timeInMinutes) {
+    private Filling(String treatmentType, double fee, short timeInMinutes) {
 
         this.treatmentType = treatmentType;
         this.fee = fee;
@@ -13,7 +13,7 @@ public class Filling extends Treatment{
 
     }
 
-    protected static Filling getFilling(String treatmentType, float fee, short timeInMinutes){
+    protected static Filling getFilling(String treatmentType, double fee, short timeInMinutes){
 
         if(instance == null){
             instance = new Filling(treatmentType, fee, timeInMinutes);

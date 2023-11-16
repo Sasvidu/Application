@@ -5,7 +5,7 @@ public class Whitening extends Treatment {
     private static Whitening instance;
 
     //Parameterized Constructor to initialize the attributes upon instantiation:
-    private Whitening(String treatmentType, float fee, short timeInMinutes) {
+    private Whitening(String treatmentType, double fee, short timeInMinutes) {
 
         this.treatmentType = treatmentType;
         this.fee = fee;
@@ -13,7 +13,7 @@ public class Whitening extends Treatment {
 
     }
 
-    protected static Whitening getWhitening(String treatmentType, float fee, short timeInMinutes){
+    protected static Whitening getWhitening(String treatmentType, double fee, short timeInMinutes){
 
         if(instance == null){
             instance = new Whitening(treatmentType, fee, timeInMinutes);
