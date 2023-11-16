@@ -14,7 +14,29 @@ public abstract class Schedule {
 
     public void addAppointment(Appointment appointment){
 
-
+        try{
+            LocalTime newAvailableTime = availableTime.plusMinutes(appointment.getTreatment().getTimeInMinutes());
+            int comparisonValue = endTime.compareTo(newAvailableTime);
+            if(comparisonValue >= 0){
+                if(!listOfAppointments.contains(appointment)) {
+                    if (appointment.getDate() == null && appointment.getTime() == null) {
+                        appointment.setDate(date);
+                        appointment.setTime(availableTime);
+                        listOfAppointments.add(appointment);
+                        availableTime = newAvailableTime;
+                    }else{
+                        throw new Exception("The appointment is already added to another schedule.");
+                    }
+                }else{
+                    throw new Exception("The appointment is already added to the schedule.");
+                }
+            }
+            else{
+                throw new Exception("Appointment exceeds the doctor's scheduled time for the day.");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -37,6 +59,7 @@ public abstract class Schedule {
     public LinkedList<Appointment> getListOfAppointments() {
         return listOfAppointments;
     }
+
 }
 
 //LocalDate myObj = LocalDate.now(); - Current Time

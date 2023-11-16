@@ -2,7 +2,17 @@ package data;
 
 public class TreatmentFactory {
 
-    private final float cleaningFee = 4000;
+    private final double cleaningFee = 4000.00;
+    private final double whiteningFee = 5000.00;
+    private final double fillingFee = 25000.00;
+    private final double nerveFillingFee = 28000.00;
+    private final double rootCanalTherapyFee = 35000.00;
+
+    private final short cleaningTime = 30;
+    private final short whiteningTime = 45;
+    private final short fillingTime = 60;
+    private final short nerveFillingTime = 60;
+    private final short rootCanalTherapyTime = 75;
 
     private static TreatmentFactory instance;
 
@@ -17,20 +27,20 @@ public class TreatmentFactory {
 
     }
 
-    public Treatment getTreatment(String treatmentType, float fee, short timeInMinutes){
+    public Treatment getTreatment(String treatmentType){
 
         if(treatmentType == null || treatmentType == ""){
             return null;
         }else if(treatmentType.matches("Cleaning")){
-            return Cleaning.getCleaning(treatmentType, fee, timeInMinutes);
+            return Cleaning.getCleaning(treatmentType, cleaningFee, cleaningTime);
         }else if(treatmentType.matches("Whitening")){
-            return Whitening.getWhitening(treatmentType, fee, timeInMinutes);
+            return Whitening.getWhitening(treatmentType, whiteningFee, whiteningTime);
         }else if(treatmentType.matches("Filling")){
-            return Filling.getFilling(treatmentType, fee, timeInMinutes);
+            return Filling.getFilling(treatmentType, fillingFee, fillingTime);
         }else if(treatmentType.matches("Nerve Filling")){
-            return NerveFilling.getNerveFilling(treatmentType, fee, timeInMinutes);
+            return NerveFilling.getNerveFilling(treatmentType, nerveFillingFee, nerveFillingTime);
         }else if(treatmentType.matches("Root Canal Therapy")){
-            return RootCanalTherapy.getRootCanalTherapy(treatmentType, fee, timeInMinutes);
+            return RootCanalTherapy.getRootCanalTherapy(treatmentType, rootCanalTherapyFee, rootCanalTherapyTime);
         }
         return null;
 
