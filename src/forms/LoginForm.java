@@ -7,7 +7,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import com.sasvidu.Main;
+import com.sasvidu.LoginManager;
+
 
 public class LoginForm extends JFrame implements ActionListener {
 
@@ -58,8 +59,8 @@ public class LoginForm extends JFrame implements ActionListener {
         loginButton = new JButton(); //Create the login button.
         loginButton.setText("Login"); //Set its text.
         loginButton.setFont(new Font("Montserrat", Font.BOLD, 16)); //Set Font style.
-        loginButton.setVerticalAlignment(JLabel.CENTER); //Center the button vertically within its space.
-        loginButton.setHorizontalAlignment(JLabel.CENTER); //Center the button horizontally within its space.
+        loginButton.setVerticalAlignment(JButton.CENTER); //Center the button vertically within its space.
+        loginButton.setHorizontalAlignment(JButton.CENTER); //Center the button horizontally within its space.
         loginButton.setFocusable(false); //Remove the box around the text within the button.
         loginButton.setBackground(Color.lightGray); //Set background to light gray color.
         loginButton.setBorder(loginButtonBorder); //Set border to loginButtonBorder
@@ -73,7 +74,7 @@ public class LoginForm extends JFrame implements ActionListener {
         this.setSize(width, height); //Sets the x-dimension to width, and y-dimension to height.
         this.setLayout(null); //Allows manual positioning for components.
         this.setLocationRelativeTo(null); //Centers the Login Form on the screen.
-        this.getContentPane().setBackground(new Color(123, 50, 250)); //Sets the color to a lilac shade.
+        this.getContentPane().setBackground(Color.darkGray); //Sets the color to gray.
 
         this.add(usernameLabel); //Add the label for Username to the form.
         this.add(passwordLabel); //Add the label for Password to the form.
@@ -91,7 +92,10 @@ public class LoginForm extends JFrame implements ActionListener {
 
         //If login button was clicked:
         if(e.getSource() == loginButton){
-            if(Main.login(usernameTextField.getText(), passwordTextField.getText())){
+            var loginManager = LoginManager.getLoginManager();
+            String username = usernameTextField.getText();
+            String password = passwordTextField.getText();
+            if(loginManager.login(username, password)){
                 //If login is successful:
                 this.setVisible(false); //Hide the form.
                 removeLoginForm(); // Clear the static variable.
@@ -99,7 +103,7 @@ public class LoginForm extends JFrame implements ActionListener {
             }else{
                 //If login fails:
                 invalidLoginLabel.setVisible(true); //Display the error message through the label.
-            }
+          }
         }
 
     }

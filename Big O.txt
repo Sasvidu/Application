@@ -1,0 +1,20 @@
+Array:
+In an array all nodes are a full on block in memory, sequatial.
+
+Lookup - O(1)
+Insert - O(n) {Worst Case - Copy all to a larger array and add one)
+Deleete - O(n) {Worst Case - Delete 1st node and shoft all else to left}
+
+
+Linked Lists:
+Nodes are all over the place.
+
+Lookup - O(n)
+Insert:
+	At the End - O(1)
+	At the Beginning - O(1)
+	In the Middle - O(n) {First have to lookup, which is O(n)}
+Delete:
+	At the End - O(n) {First have to lookup whole list, which is O(n)}
+	At the Beginning - O(1)
+	In the Middle - O(n) 
