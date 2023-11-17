@@ -36,7 +36,7 @@ public class ScheduleCollection{
             }else{
                 throw new Exception("The schedule is already added!");
             }
-        }catch (Exception e){
+        }catch(Exception e){
             e.printStackTrace();
         }
 
@@ -51,6 +51,10 @@ public class ScheduleCollection{
     public boolean hasSchedule(String date){
         LocalDate properDate = LocalDate.parse(date);
         return schedules.containsKey(properDate);
+    }
+
+    public Schedule getSchedule(LocalDate date){
+        return schedules.get(date);
     }
 
     public Iterator getIterator() {

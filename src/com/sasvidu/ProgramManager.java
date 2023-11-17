@@ -36,8 +36,8 @@ public class ProgramManager {
 
     public void startApp(){
 
-        LoginForm.getLoginForm(loginFormWidth, loginFormHeight);
-        //HomeFrame.getHomeFrame(homeFrameWidth, homeFrameHeight, homeFramePanelWidth, homeFrameSearchPanelHeight);
+        //LoginForm.getLoginForm(loginFormWidth, loginFormHeight);
+        HomeFrame.getHomeFrame(homeFrameWidth, homeFrameHeight, homeFramePanelWidth, homeFrameSearchPanelHeight);
 //        TreatmentFactory treatmentFactory = TreatmentFactory.getTreatmentFactory();
 //        ScheduleFactory scheduleFactory = ScheduleFactory.getScheduleFactory();
 //

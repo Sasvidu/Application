@@ -1,9 +1,13 @@
 package forms;
 
+import com.sasvidu.HomeManager;
+
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-public class HomeFrame extends JFrame {
+public class HomeFrame extends JFrame implements ActionListener {
 
     // Private variable for storing the singular instance
     private static HomeFrame instance;
@@ -133,6 +137,7 @@ public class HomeFrame extends JFrame {
         searchButton.setFocusable(false);
         searchButton.setBackground(Color.lightGray);
         searchButton.setBounds((panelWidth - searchButtonWidth) / 2, (searchPanelHeight * 7 / 10), searchButtonWidth, searchButtonHeight);
+        searchButton.addActionListener(this);
 
         insertButton = new JButton();
         insertButton.setText("INSERT");
@@ -142,6 +147,7 @@ public class HomeFrame extends JFrame {
         insertButton.setFocusable(false);
         insertButton.setBackground(Color.lightGray);
         insertButton.setBounds(labelX, 450, formButtonWidth, formButtonHeight);
+        insertButton.addActionListener(this);
 
         payButton = new JButton();
         payButton.setText("PAYMENT");
@@ -151,6 +157,7 @@ public class HomeFrame extends JFrame {
         payButton.setFocusable(false);
         payButton.setBackground(Color.lightGray);
         payButton.setBounds(labelX + (formButtonWidth + formButtonMargin), 450, formButtonWidth, formButtonHeight);
+        payButton.addActionListener(this);
 
         editButton = new JButton();
         editButton.setText("UPDATE");
@@ -160,6 +167,7 @@ public class HomeFrame extends JFrame {
         editButton.setFocusable(false);
         editButton.setBackground(Color.lightGray);
         editButton.setBounds(labelX + (2 * (formButtonWidth + formButtonMargin)), 450, formButtonWidth, formButtonHeight);
+        editButton.addActionListener(this);
 
         // Window:
         this.setTitle("Home");
@@ -197,6 +205,30 @@ public class HomeFrame extends JFrame {
         formPanel.add(editButton);
 
         this.setVisible(true);
+
+    }
+
+    private boolean isPaid(){
+
+        if(appointmentYesPaidButton.isSelected()){
+            return true;
+        }
+        return false;
+
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+
+        if(e.getSource() == insertButton){
+            String patientName = patientNameField.getText();
+            String patientAddress = patientAddressField.getText();
+            String patientTelephoneNumber = patientPhoneNumberField.getText();
+            String treatmentType = appointmentTreatmentField.getSelectedItem().toString();
+            boolean isPaid = isPaid();
+            var homeManager = HomeManager.getHomeManager();
+            homeManager.insert(patientName, patientAddress, patientTelephoneNumber, treatmentType, isPaid);
+        }
 
     }
 
