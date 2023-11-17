@@ -20,9 +20,9 @@ public class HomeManager {
 
     }
 
-    public void insert(String patientName, String patientAddress, String patientTelephoneNumber, String treatmentType, boolean isPaid){
+    public void insert(String patientName, String patientAddress, String patientTelephoneNumber, String treatmentType){
 
-        InsertFrame insertFrame = new InsertFrame(insertFrameWidth, insertFrameHeight, patientName, patientAddress, patientTelephoneNumber, treatmentType, isPaid);
+        InsertFrame insertFrame = new InsertFrame(insertFrameWidth, insertFrameHeight, patientName, patientAddress, patientTelephoneNumber, treatmentType);
 
     }
 

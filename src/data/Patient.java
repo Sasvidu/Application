@@ -4,12 +4,12 @@ public class Patient {
 
     private String name;
     private String address;
-    private String telNo;
+    private String telephoneNumber;
 
-    protected Patient(String name, String address, String telNo){
+    protected Patient(String name, String address, String telephoneNumber){
         this.name = name;
         this.address = address;
-        this.telNo = telNo;
+        this.telephoneNumber = telephoneNumber;
     }
 
     public String getName() {
@@ -20,8 +20,8 @@ public class Patient {
         return address;
     }
 
-    public String getTelNo() {
-        return telNo;
+    public String getTelephoneNumber() {
+        return telephoneNumber;
     }
 
     public void setName(String name) {
@@ -32,7 +32,7 @@ public class Patient {
         this.address = address;
     }
 
-    public void setTelNo(String telNo) {
-        this.telNo = telNo;
+    public void setTelephoneNumber(String telNo) {
+        this.telephoneNumber = telNo;
     }
 }

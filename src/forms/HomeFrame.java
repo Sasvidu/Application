@@ -227,7 +227,7 @@ public class HomeFrame extends JFrame implements ActionListener {
             String treatmentType = appointmentTreatmentField.getSelectedItem().toString();
             boolean isPaid = isPaid();
             var homeManager = HomeManager.getHomeManager();
-            homeManager.insert(patientName, patientAddress, patientTelephoneNumber, treatmentType, isPaid);
+            homeManager.insert(patientName, patientAddress, patientTelephoneNumber, treatmentType);
         }
 
     }

@@ -12,9 +12,9 @@ public class Appointment {
     private LocalTime time;
     private boolean isPaid;
 
-    protected Appointment(int appointmentId, Patient patient, Treatment treatment){
+    public Appointment(int appointmentId, String patientName, String patientAddress, String patientTelephoneNumber, Treatment treatment){
         this.appointmentId = appointmentId;
-        this.patient = patient;
+        this.patient = new Patient(patientName, patientAddress, patientTelephoneNumber);
         this.treatment = treatment;
         this.isPaid = false;
     }
@@ -43,11 +43,10 @@ public class Appointment {
         return isPaid;
     }
 
-
-    public void setPatient(String name, String address, String telNo) {
+    public void setPatient(String name, String address, String telephoneNumber) {
         this.patient.setName(name);
         this.patient.setAddress(address);
-        this.patient.setTelNo(telNo);
+        this.patient.setTelephoneNumber(telephoneNumber);
     }
 
     public void setTreatment(Treatment treatment) {

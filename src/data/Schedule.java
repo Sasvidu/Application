@@ -12,9 +12,8 @@ public abstract class Schedule {
     protected LocalTime availableTime;
     protected LinkedList<Appointment> listOfAppointments;
 
-    public void addAppointment(Appointment appointment){
+    public String addAppointment(Appointment appointment){
 
-        try{
             LocalTime newAvailableTime = availableTime.plusMinutes(appointment.getTreatment().getTimeInMinutes());
             int comparisonValue = endTime.compareTo(newAvailableTime);
             if(comparisonValue >= 0){
@@ -24,19 +23,17 @@ public abstract class Schedule {
                         appointment.setTime(availableTime);
                         listOfAppointments.add(appointment);
                         availableTime = newAvailableTime;
+                        return "Success";
                     }else{
-                        throw new Exception("The appointment is already added to another schedule.");
+                        return "Present Elsewhere Error";
                     }
                 }else{
-                    throw new Exception("The appointment is already added to the schedule.");
+                    return "Already Added Error";
                 }
             }
             else{
-                throw new Exception("Appointment exceeds the doctor's scheduled time for the day.");
+                return "Overflow Error";
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
     }
 
