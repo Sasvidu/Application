@@ -43,7 +43,7 @@ public abstract class Schedule {
 
         int index = listOfAppointments.indexOf(oldAppointment);
         Iterator<Appointment> iterator = listOfAppointments.listIterator(index);
-        int timeChangeInMinutes = treatment.timeInMinutes = oldAppointment.getTreatment().getTimeInMinutes();
+        int timeChangeInMinutes = treatment.timeInMinutes - oldAppointment.getTreatment().getTimeInMinutes();
         oldAppointment.setPatient(patientName, patientAddress, patientTelephoneNumber);
         oldAppointment.setTreatment(treatment);
         iterator.next();
