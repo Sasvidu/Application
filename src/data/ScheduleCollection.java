@@ -22,14 +22,13 @@ public class ScheduleCollection{
 
     }
 
-    public void addSchedule(String date){
+    public void addSchedule(LocalDate date){
 
         try {
-            LocalDate properDate = LocalDate.parse(date);
-            if (!hasSchedule(properDate)) {
-                Schedule schedule = scheduleFactory.getSchedule(date);
+            if (!hasSchedule(date)) {
+                Schedule schedule = scheduleFactory.getSchedule(date.toString());
                 if(schedule != null) {
-                    schedules.put(properDate, schedule);
+                    schedules.put(date, schedule);
                 } else {
                     throw new Exception("This date does not allow a schedule to be created!");
                 }
@@ -57,8 +56,22 @@ public class ScheduleCollection{
         return schedules.get(date);
     }
 
+    public TreeMap<LocalDate, Schedule> getSchedules() {
+        return schedules;
+    }
+
     public Iterator getIterator() {
         Set set = schedules.entrySet();
         return set.iterator();
     }
+
+    public int getScheduleCollectionSize(){
+        return schedules.size();
+    }
+
+//    public Iterator getKeyIterator() {
+//        Set<LocalDate> set = schedules.keySet();
+//        return set.iterator();
+//    }
+
 }

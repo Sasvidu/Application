@@ -9,8 +9,12 @@ import java.awt.event.ActionListener;
 
 public class HomeFrame extends JFrame implements ActionListener {
 
-    // Private variable for storing the singular instance
+    //Private variable for storing the singular instance:
     private static HomeFrame instance;
+
+    //Table:
+    private JTable appointmentsTable;
+    private JScrollPane appointmentsTableScrollPane;
 
     //Buttons:
     private JButton searchButton;
@@ -28,9 +32,17 @@ public class HomeFrame extends JFrame implements ActionListener {
     private JRadioButton appointmentYesPaidButton;
     private JRadioButton appointmentNoPaidButton;
 
+    //Data:
+    private String[][] data = getData();
+
+    //Declare HomeFrame Dimensions:
+    static final int width = 1550;
+    static final int height = 850;
+    static final int panelWidth = 600;
+    static final int searchPanelHeight = 200;
 
     // Private Constructor
-    private HomeFrame(int width, int height, int panelWidth, int searchPanelHeight) {
+    private HomeFrame() {
 
         Color homeOrange = new Color(0xB76D68);
 
@@ -61,16 +73,14 @@ public class HomeFrame extends JFrame implements ActionListener {
         formPanel.setLayout(null);
 
         // Table:
-        String data[][] = {{"101", "Amit", "670000"},
-                {"102", "Jai", "780000"},
-                {"103", "Sachin", "700000"}};
-        String column[] = {"ID", "NAME", "SALARY"};
 
-        JTable appointmentsTable = new JTable(data, column);
+        String column[] = {"Date", "Time", "App. Id", "Name", "Address", "Tel. No", "Treatment", "Paid"};
+
+        appointmentsTable = new JTable(data, column);
         appointmentsTable.setRowHeight(30);
         appointmentsTable.getTableHeader().setFont(new Font("Montserrat", Font.BOLD, 18));
         appointmentsTable.setFont(new Font("Montserrat", Font.PLAIN, 16));
-        JScrollPane appointmentsTableScrollPane = new JScrollPane(appointmentsTable);
+        appointmentsTableScrollPane = new JScrollPane(appointmentsTable);
         appointmentsTableScrollPane.setBounds(panelWidth, 0, width - panelWidth, height);
 
         // Labels
@@ -228,18 +238,60 @@ public class HomeFrame extends JFrame implements ActionListener {
             boolean isPaid = isPaid();
             var homeManager = HomeManager.getHomeManager();
             homeManager.insert(patientName, patientAddress, patientTelephoneNumber, treatmentType);
+        }else if(e.getSource() == searchButton){
+            String appointmentId = appointmentIdFieldForSearch.getText();
+            String[] attributes = HomeManager.getHomeManager().search(appointmentId);
+            if(attributes != null) {
+                System.out.println(attributes);
+                this.appointmentIdField.setText(String.valueOf(attributes[0]));
+                this.patientNameField.setText(String.valueOf(attributes[1]));
+                this.patientAddressField.setText(String.valueOf(attributes[2]));
+                this.patientPhoneNumberField.setText(String.valueOf(attributes[3]));
+                this.appointmentTreatmentField.setSelectedItem(String.valueOf(attributes[4]));
+                boolean isPaid = Boolean.parseBoolean(attributes[5]);
+                if (isPaid) {
+                    appointmentYesPaidButton.setSelected(true);
+                } else {
+                    appointmentNoPaidButton.setSelected(true);
+                }
+            }
+        }else if(e.getSource() == editButton){
+            String appointmentId = appointmentIdField.getText();
+            String patientName = patientNameField.getText();
+            String patientAddress = patientAddressField.getText();
+            String patientTelephoneNumber = patientPhoneNumberField.getText();
+            String treatmentType = appointmentTreatmentField.getSelectedItem().toString();
+            var homeManager = HomeManager.getHomeManager();
+            homeManager.edit(appointmentId, patientName, patientAddress, patientTelephoneNumber, treatmentType);
+        }else if(e.getSource() == payButton){
+            String appointmentId = appointmentIdField.getText();
+            var homeManager = HomeManager.getHomeManager();
+            homeManager.pay(appointmentId);
         }
 
     }
 
     // Public method to retrieve the single instance
-    public static HomeFrame getHomeFrame(int width, int height, int panelWidth, int searchPanelHeight) {
+    public static HomeFrame getHomeFrame() {
 
         if (instance == null) {
-            instance = new HomeFrame(width, height, panelWidth, searchPanelHeight);
+            instance = new HomeFrame();
         }
         return instance;
 
+    }
+
+    public void removeHomeFrame(){
+        instance = null;
+        this.dispose();
+    }
+
+    private String[][] getData(){
+        if(HomeManager.getHomeManager().getAppointmentList() == null){
+            data = new String[1][8];
+            return data;
+        }
+        return HomeManager.getHomeManager().getAppointmentList();
     }
 
 }

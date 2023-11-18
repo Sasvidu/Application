@@ -1,5 +1,7 @@
 package data;
 
+import forms.Invoice;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -61,9 +63,9 @@ public class Appointment {
         this.time = time;
     }
 
-    public Invoice pay(){
+
+    public void pay(){
         this.isPaid = true;
-        return new Invoice(this);
     }
 
 }

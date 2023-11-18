@@ -2,7 +2,9 @@ package data;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.Set;
 
 public abstract class Schedule {
 
@@ -21,7 +23,7 @@ public abstract class Schedule {
                     if (appointment.getDate() == null && appointment.getTime() == null) {
                         appointment.setDate(date);
                         appointment.setTime(availableTime);
-                        listOfAppointments.add(appointment);
+                        listOfAppointments.addLast(appointment);
                         availableTime = newAvailableTime;
                         return "Success";
                     }else{
@@ -34,6 +36,23 @@ public abstract class Schedule {
             else{
                 return "Overflow Error";
             }
+
+    }
+
+    public void editAppointment(Appointment oldAppointment, String patientName, String patientAddress, String patientTelephoneNumber, Treatment treatment){
+
+        int index = listOfAppointments.indexOf(oldAppointment);
+        Iterator<Appointment> iterator = listOfAppointments.listIterator(index);
+        int timeChangeInMinutes = treatment.timeInMinutes = oldAppointment.getTreatment().getTimeInMinutes();
+        oldAppointment.setPatient(patientName, patientAddress, patientTelephoneNumber);
+        oldAppointment.setTreatment(treatment);
+        iterator.next();
+        while(iterator.hasNext()){
+            Appointment appointment = iterator.next();
+            LocalTime newTime = appointment.getTime().plusMinutes(timeChangeInMinutes);
+            appointment.setTime(newTime);
+        }
+        availableTime = availableTime.plusMinutes(timeChangeInMinutes);
 
     }
 
@@ -57,9 +76,22 @@ public abstract class Schedule {
         return listOfAppointments;
     }
 
+    public String[][] getAppointmentsArray() {
+        String[][] array = new String[listOfAppointments.size()][8];
+        int rowIndex = 0;
+        for (Appointment appointment : listOfAppointments) {
+            array[rowIndex][0] = appointment.getDate().toString();
+            array[rowIndex][1] = appointment.getTime().toString();
+            array[rowIndex][2] = String.valueOf(appointment.getAppointmentId());
+            array[rowIndex][3] = appointment.getPatient().getName();
+            array[rowIndex][4] = appointment.getPatient().getAddress();
+            array[rowIndex][5] = appointment.getPatient().getTelephoneNumber();
+            array[rowIndex][6] = appointment.getTreatment().getTreatmentType();
+            array[rowIndex][7] = String.valueOf(appointment.isPaid());
+            rowIndex++;
+        }
+        return array;
+    }
+
 }
 
-//LocalDate myObj = LocalDate.now(); - Current Time
-// LocalDate.of(); - Specific Time
-// LocalTime time = LocalTime.parse("09:00"); - Create a time object from string
-// time.plusMinutes(30); - Adds 30 minutes

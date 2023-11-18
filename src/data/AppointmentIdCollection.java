@@ -1,6 +1,7 @@
 package data;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class AppointmentIdCollection {
 
@@ -35,6 +36,21 @@ public class AppointmentIdCollection {
 
         return appointments.containsKey(id);
 
+    }
+
+    public int getNumberOfAppointments(){
+
+        return appointments.size();
+
+    }
+
+    public void printAppointments() {
+        System.out.println("Printing Appointments:");
+        for (Map.Entry<Integer, Appointment> entry : appointments.entrySet()) {
+            int id = entry.getKey();
+            Appointment appointment = entry.getValue();
+            System.out.println("ID: " + id + ", Appointment: " + appointment);
+        }
     }
 
 }

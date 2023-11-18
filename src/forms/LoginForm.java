@@ -19,8 +19,12 @@ public class LoginForm extends JFrame implements ActionListener {
     private JPasswordField passwordTextField;
     private JLabel invalidLoginLabel;
 
+    //Declare dimensions of the JFrame window:
+    static final int width = 420;
+    static final int height = 540;
+
     //Private Constructor
-    private LoginForm(int width, int height) {
+    private LoginForm() {
 
         //Borders:
         //Border loginButtonBorder = BorderFactory.createLineBorder(Color.darkGray, 1);
@@ -97,9 +101,7 @@ public class LoginForm extends JFrame implements ActionListener {
             String password = passwordTextField.getText();
             if(loginManager.login(username, password)){
                 //If login is successful:
-                this.setVisible(false); //Hide the form.
                 removeLoginForm(); // Clear the static variable.
-                this.dispose(); //Dispose of the current frame object.
             }else{
                 //If login fails:
                 invalidLoginLabel.setVisible(true); //Display the error message through the label.
@@ -109,18 +111,19 @@ public class LoginForm extends JFrame implements ActionListener {
     }
 
     //Public method to retrieve the single instance
-    public static LoginForm getLoginForm(int width, int height){
+    public static LoginForm getLoginForm(){
 
         if(instance == null){
-            instance = new LoginForm(width, height);
+            instance = new LoginForm();
         }
         return instance;
 
     }
 
     //Private method to destroy the single instance
-    private static void removeLoginForm(){
+    private void removeLoginForm(){
         instance = null;
+        this.dispose(); //Dispose of the current frame object.
     }
 
 }

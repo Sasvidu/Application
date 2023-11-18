@@ -35,7 +35,7 @@ public class LoginManager {
             String currentUsername = currentUser.getUsername();
             String currentPassword = currentUser.getPassword();
             if(currentUsername.matches(username) && currentPassword.matches(password)) {
-                HomeFrame.getHomeFrame(homeFrameWidth, homeFrameHeight, homeFramePanelWidth, homeFrameSearchPanelHeight);
+                HomeFrame.getHomeFrame();
                 System.out.println(true);
                 return true;
             }

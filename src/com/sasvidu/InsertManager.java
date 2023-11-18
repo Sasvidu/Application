@@ -1,6 +1,7 @@
 package com.sasvidu;
 
 import data.*;
+import forms.HomeFrame;
 
 import java.time.*;
 import java.util.*;
@@ -11,7 +12,6 @@ public class InsertManager {
     private ScheduleCollection schedules = ScheduleCollection.getScheduleCollection();
     private AppointmentIdCollection appointments = AppointmentIdCollection.getAppointmentIdCollection();
     private TreatmentFactory treatmentFactory = TreatmentFactory.getTreatmentFactory();
-    private ScheduleFactory scheduleFactory = ScheduleFactory.getScheduleFactory();
     private String[] unavailableDays = {"TUESDAY", "THURSDAY", "FRIDAY"};
 
     private final LocalTime mondayStartTime = LocalTime.parse("18:00");
@@ -91,16 +91,10 @@ public class InsertManager {
             LocalDate date = LocalDate.ofInstant(selectedDate.toInstant(), ZoneId.systemDefault()); //Convert the selected date to a LocalDate object.
             //See if a schedule has already been created for the date:
             if (schedules.hasSchedule(date)) {
-                Schedule schedule = schedules.getSchedule(date); //If a schedule is already available, get it into a variable.
-                return insertAppointment(patientName, patientAddress, patientTelephoneNumber, treatmentType, schedule); //Insert the appointment into the schedule and the appointment list.
+                return insertAppointment(patientName, patientAddress, patientTelephoneNumber, treatmentType, date); //Insert the appointment into the schedule and the appointment list.
             } else {
-                Schedule schedule = scheduleFactory.getSchedule(date.toString()); //If a schedule is not already available, create a new one.
-                //Verify that the schedule is not null
-                if (schedule != null) {
-                    return insertAppointment(patientName, patientAddress, patientTelephoneNumber, treatmentType, schedule); //Insert the appointment into the schedule and the appointment list.
-                } else {
-                    return retrievalError;
-                }
+                schedules.addSchedule(date); //If a schedule is not already available, create a new one.
+                return insertAppointment(patientName, patientAddress, patientTelephoneNumber, treatmentType, date); //Insert the appointment into the schedule and the appointment list.
             }
         }
 
@@ -155,13 +149,14 @@ public class InsertManager {
         Random random = new Random();
         int id = 100;
         while (appointments.hasId(id)) {
-            id = random.nextInt();
+            id = random.nextInt(1000);
         }
         return id;
 
     }
 
-    private String insertAppointment(String patientName, String patientAddress, String patientTelephoneNumber, String treatmentType, Schedule schedule) {
+    private String insertAppointment(String patientName, String patientAddress, String patientTelephoneNumber, String treatmentType, LocalDate date) {
+        Schedule schedule = schedules.getSchedule(date);
         Treatment treatment = treatmentFactory.getTreatment(treatmentType); //Get the object representing the treatment required.
         int appointmentId = createId(); //Create a unique Id for the appointment
         Appointment appointment = new Appointment(appointmentId, patientName, patientAddress, patientTelephoneNumber, treatment); //Create a new appointment object to encapsulate all the information.
@@ -169,10 +164,16 @@ public class InsertManager {
         //See if the operation was successful
         if (response.matches(success)) {
             appointments.addAppointment(appointmentId, appointment); //Add the appointment to a hashmap of appointments
+            refreshHomeFrame();
             return success; //Return a success message
         } else {
             return response; //If addition is not successful, forward the error to the JFrame.
         }
+    }
+
+    private void refreshHomeFrame(){
+        HomeFrame.getHomeFrame().removeHomeFrame();
+        HomeFrame.getHomeFrame();
     }
 
 }

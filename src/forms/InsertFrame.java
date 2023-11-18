@@ -34,7 +34,11 @@ public class InsertFrame extends JFrame implements ActionListener {
     private final String errorMessage = "Something went wrong, please contact your troubleshooting manager for assistance";
     private final String successAddtionMessage = "The appointment has been successfully added, the registration fee is LKR. 1000.00/=";
 
-    public InsertFrame(int width, int height, String patientName, String patientAddress, String patientTelephoneNumber, String treatmentType) {
+    //Dimensions:
+    private final int width = 600;
+    private final int height = 500;
+
+    public InsertFrame(String patientName, String patientAddress, String patientTelephoneNumber, String treatmentType) {
 
         int dateLabelWidth = 70;
         int buttonWidth = 250;
