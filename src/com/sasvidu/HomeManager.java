@@ -4,49 +4,59 @@ import data.*;
 import forms.HomeFrame;
 import forms.InsertFrame;
 import forms.Invoice;
-
 import javax.swing.*;
 import java.time.LocalDate;
-import java.time.LocalTime;
-import java.util.Iterator;
 import java.util.Map;
 
 public class HomeManager {
 
-    private static HomeManager instance;
+    //This class is used to implement the functionalities of the Home window. It is a singleton/
 
+    //Private, class variable to hold the unique instance
+    private static HomeManager instance;
+    //Get reference to the appointment hashmap
+    private AppointmentIdCollection appointments = AppointmentIdCollection.getAppointmentIdCollection();
+
+    //Private constructor
     private HomeManager(){}
 
+    //Public method to retrieve the unique instance
     public static HomeManager getHomeManager(){
-
         if(instance == null){
             instance = new HomeManager();
         }
         return instance;
-
     }
 
+    //Method to handle the click event of the insert button
     public void insert(String patientName, String patientAddress, String patientTelephoneNumber, String treatmentType){
-
-        InsertFrame insertFrame = new InsertFrame(patientName, patientAddress, patientTelephoneNumber, treatmentType);
-
+        new InsertFrame(patientName, patientAddress, patientTelephoneNumber, treatmentType);
     }
 
+    //Method to handle the click event of the search button
     public String[] search(String appointmentId){
 
         try {
+
+            //Convert the appointment id into and integer
             int properAppointmentId = Integer.parseInt(appointmentId);
-            AppointmentIdCollection appointments = AppointmentIdCollection.getAppointmentIdCollection();
+            //Get the appointment object from the appointment hashmap
             Appointment appointment = appointments.getAppointment(properAppointmentId);
+            //Read the values from the appointment
             String patientName = appointment.getPatient().getName();
             String patientAddress = appointment.getPatient().getAddress();
             String patientTelephoneNumber = appointment.getPatient().getTelephoneNumber();
             String treatmentType = appointment.getTreatment().getTreatmentType();
             String isPaid = String.valueOf(appointment.isPaid());
+            //Return the results in an array
             return new String[]{appointmentId, patientName, patientAddress, patientTelephoneNumber, treatmentType, isPaid};
+
         }catch (Exception e){
+
+            //If the string cannot be converted to an integer, shoe a warning message
             JOptionPane.showMessageDialog(null, "The ID must be a number!", "Warning", JOptionPane.WARNING_MESSAGE);
             return null;
+
         }
 
     }
@@ -54,18 +64,30 @@ public class HomeManager {
     public void edit(String appointmentId, String patientName, String patientAddress, String patientTelephoneNumber, String treatmentType){
 
         try{
+
+            //Convert the appointment id into an integer
             int properAppointmentId = Integer.parseInt(appointmentId);
-            AppointmentIdCollection appointments = AppointmentIdCollection.getAppointmentIdCollection();
+            //Get reference to the schedules collection
             ScheduleCollection schedules = ScheduleCollection.getScheduleCollection();
+            //Get the appointment object from the appointment hashmap
             Appointment appointment = appointments.getAppointment(properAppointmentId);
+            //Get the appointment date and obtain the relevant schedule
             LocalDate date = appointment.getDate();
-            Treatment treatment = TreatmentFactory.getTreatmentFactory().getTreatment(treatmentType);
             Schedule schedule = schedules.getSchedule(date);
+            //Get the relevant treatment object
+            Treatment treatment = TreatmentFactory.getTreatmentFactory().getTreatment(treatmentType);
+            //Call the update method for the schedule
             schedule.editAppointment(appointment, patientName, patientAddress, patientTelephoneNumber, treatment);
+            //Show a success message
             JOptionPane.showMessageDialog(null, "Appointment successfully edited", "Success!", JOptionPane.INFORMATION_MESSAGE);
+            //Reload data
             refreshHomeFrame();
+
         }catch (Exception e){
+
+            //If an exception occurs, display it in an error message
             JOptionPane.showMessageDialog(null, "Exception occured: " + e, "Error", JOptionPane.ERROR_MESSAGE);
+
         }
 
     }
@@ -73,23 +95,40 @@ public class HomeManager {
     public void pay(String appointmentId){
 
         try {
+
+            //Convert the appointment id into an integer
             int properAppointmentId = Integer.parseInt(appointmentId);
-            AppointmentIdCollection appointments = AppointmentIdCollection.getAppointmentIdCollection();
+            //Get the appointment object from the appointment hashmap
             Appointment appointment = appointments.getAppointment(properAppointmentId);
+            //Get the value of the fee
             String fee = String.valueOf(appointment.getTreatment().getFee());
+            //Display it in a message box and await user's reply
             int confirmation = JOptionPane.showConfirmDialog(null, "The payment is : LkR. " + fee + "0/=\n\nConfirm Payment", "Payment Confirmation", JOptionPane.YES_NO_OPTION);
+
+            //See whether the reply is a confirmation
             if(confirmation == 0){
+
+                //Update the data
                 appointment.pay();
+                //Show success message
                 JOptionPane.showMessageDialog(null, "Payment Successful!", "Paid", JOptionPane.INFORMATION_MESSAGE);
+                //Reload the data
                 refreshHomeFrame();
-                Invoice invoice= new Invoice(appointment);
+                //Display an invoice
+                new Invoice(appointment);
+
             }
+
         }catch (Exception e){
+
+            //If an exception occurs, display it in an error message
             JOptionPane.showMessageDialog(null, "Exception occured: " + e, "Error", JOptionPane.ERROR_MESSAGE);
+
         }
 
     }
 
+    //Function to get the data for the appointments table
     public String[][] getAppointmentList(){
 
         String[][] appointmentsList = null;
@@ -133,6 +172,7 @@ public class HomeManager {
         }
     }
 
+    //Re-instantiate home frame
     private void refreshHomeFrame(){
         HomeFrame.getHomeFrame().removeHomeFrame();
         HomeFrame.getHomeFrame();

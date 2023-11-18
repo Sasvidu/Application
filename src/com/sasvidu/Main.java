@@ -1,10 +1,6 @@
 package com.sasvidu;
 
-import data.AppointmentIdCollection;
-
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 public class Main {
 
