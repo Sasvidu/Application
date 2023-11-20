@@ -4,17 +4,22 @@ import com.sasvidu.HomeManager;
 import data.*;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.LinkedList;
 
-public class HomeFrame extends JFrame implements ActionListener {
+public class HomeFrame extends JFrame implements ActionListener, Observer {
 
     //Private variable for storing the singular instance:
     private static HomeFrame instance;
 
+    private LinkedList<Observable> observables = new LinkedList<>();
+
     //Table:
+    private TableModel appointmentsTableModel;
     private JTable appointmentsTable;
     private JScrollPane appointmentsTableScrollPane;
 
@@ -33,9 +38,11 @@ public class HomeFrame extends JFrame implements ActionListener {
     private JComboBox appointmentTreatmentField;
     private JRadioButton appointmentYesPaidButton;
     private JRadioButton appointmentNoPaidButton;
+    private ButtonGroup appointmentIsPaidButtonGroup;
 
     //Data:
     private String[][] data = getData();
+    private String column[] = {"Date", "Time", "App. Id", "Name", "Address", "Tel. No", "Treatment", "Paid"};
 
     //Declare HomeFrame Dimensions:
     static final int width = 1550;
@@ -46,6 +53,7 @@ public class HomeFrame extends JFrame implements ActionListener {
     // Private Constructor
     private HomeFrame() {
 
+        addObservable(ScheduleCollection.getScheduleCollection());
         Color homeOrange = new Color(0xB76D68);
 
         int labelWidth = 200;
@@ -75,10 +83,8 @@ public class HomeFrame extends JFrame implements ActionListener {
         formPanel.setLayout(null);
 
         // Table:
-
-        String column[] = {"Date", "Time", "App. Id", "Name", "Address", "Tel. No", "Treatment", "Paid"};
-
-        appointmentsTable = new JTable(data, column);
+        appointmentsTableModel = new DefaultTableModel(data, column);
+        appointmentsTable = new JTable(appointmentsTableModel);
         appointmentsTable.setRowHeight(30);
         appointmentsTable.getTableHeader().setFont(new Font("Montserrat", Font.BOLD, 18));
         appointmentsTable.setFont(new Font("Montserrat", Font.PLAIN, 16));
@@ -125,7 +131,7 @@ public class HomeFrame extends JFrame implements ActionListener {
         appointmentYesPaidButton.setBackground(homeOrange);
         appointmentNoPaidButton.setBackground(homeOrange);
 
-        ButtonGroup appointmentIsPaidButtonGroup = new ButtonGroup();
+        appointmentIsPaidButtonGroup = new ButtonGroup();
         appointmentIsPaidButtonGroup.add(appointmentYesPaidButton);
         appointmentIsPaidButtonGroup.add(appointmentNoPaidButton);
 
@@ -220,15 +226,6 @@ public class HomeFrame extends JFrame implements ActionListener {
 
     }
 
-    private boolean isPaid(){
-
-        if(appointmentYesPaidButton.isSelected()){
-            return true;
-        }
-        return false;
-
-    }
-
     @Override
     public void actionPerformed(ActionEvent e) {
 
@@ -283,24 +280,65 @@ public class HomeFrame extends JFrame implements ActionListener {
 
     }
 
-    public void update(){
-        instance = null;
-        this.dispose();
-        HomeFrame.getHomeFrame();
+    private boolean isPaid(){
+
+        if(appointmentYesPaidButton.isSelected()){
+            return true;
+        }
+        return false;
+
     }
 
     private String[][] getData(){
+
         if(HomeManager.getHomeManager().getAppointmentList() == null){
             data = new String[1][8];
             return data;
         }
         return HomeManager.getHomeManager().getAppointmentList();
+
     }
 
     public void refreshHomeFrame(){
-        instance = null;
-        this.dispose();
-        HomeFrame.getHomeFrame();
+
+        String[][] newData = getData();
+        updateTable(newData);
+
+        appointmentIdField.setText("");
+        patientNameField.setText("");
+        patientAddressField.setText("");
+        patientPhoneNumberField.setText("");
+        appointmentTreatmentField.setSelectedItem("Cleaning");
+        appointmentYesPaidButton.setSelected(false);
+        appointmentNoPaidButton.setSelected(false);
+        appointmentIsPaidButtonGroup.clearSelection();
+
+        appointmentIdField.repaint();
+        appointmentsTable.repaint();
+        patientNameField.repaint();
+        patientAddressField.repaint();
+        patientPhoneNumberField.repaint();
+        appointmentTreatmentField.repaint();
+        appointmentYesPaidButton.repaint();
+        appointmentNoPaidButton.repaint();
+
+    }
+
+    private void updateTable(String[][] newData) {
+
+        DefaultTableModel model = (DefaultTableModel) appointmentsTable.getModel();
+        model.setDataVector(newData, column);
+
+    }
+
+    public void addObservable(Observable observable){
+        observables.add(observable);
+        observable.addObserver(this);
+    }
+
+    @Override
+    public void update(Observable observable) {
+        refreshHomeFrame();
     }
 
 }

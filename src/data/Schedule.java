@@ -6,13 +6,14 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Set;
 
-public abstract class Schedule {
+public abstract class Schedule implements Observable{
 
     protected LocalDate date;
     protected LocalTime startTime;
     protected LocalTime endTime;
     protected LocalTime availableTime;
     protected LinkedList<Appointment> listOfAppointments;
+    private LinkedList<Observer> observers = new LinkedList<>();
 
     public String addAppointment(Appointment appointment){
 
@@ -25,6 +26,7 @@ public abstract class Schedule {
                         appointment.setTime(availableTime);
                         listOfAppointments.addLast(appointment);
                         availableTime = newAvailableTime;
+                        notifyObservers();
                         return "Success";
                     }else{
                         return "Present Elsewhere Error";
@@ -53,6 +55,7 @@ public abstract class Schedule {
             appointment.setTime(newTime);
         }
         availableTime = availableTime.plusMinutes(timeChangeInMinutes);
+        notifyObservers();
 
     }
 
@@ -91,6 +94,23 @@ public abstract class Schedule {
             rowIndex++;
         }
         return array;
+    }
+
+    @Override
+    public void addObserver(Observer observer) {
+        observers.add(observer);
+    }
+
+    @Override
+    public void removeObserver(Observer observer) {
+        observers.remove(observer);
+    }
+
+    @Override
+    public void notifyObservers() {
+        for (Observer observer : observers) {
+            observer.update(this);
+        }
     }
 
 }

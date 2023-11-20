@@ -80,7 +80,7 @@ public class InsertManager {
                     if (getStartingTime(dayOfWeek) != error) {
                         availableTime = getStartingTime(dayOfWeek);
                     } else {
-                        //IIf the method to get the starting time for the day fails, send an error message that can be interpreted by the Insert frame
+                        //If the method to get the starting time for the day fails, send an error message that can be interpreted by the Insert frame
                         return retrievalError;
                     }
 
@@ -228,8 +228,9 @@ public class InsertManager {
 
             //Add the appointment to a hashmap of appointments if the appointment was added to the schedule
             appointments.addAppointment(appointmentId, appointment);
+
             //Re-instantiate the home window so that its table is updated
-            HomeFrame.getHomeFrame().refreshHomeFrame();
+            //HomeFrame.getHomeFrame().refreshHomeFrame();
             //Return a success message
             return success;
 

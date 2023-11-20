@@ -1,5 +1,7 @@
 package data;
 
+import forms.HomeFrame;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -43,16 +45,24 @@ public class ScheduleFactory {
             return null;
         }else{
             if(dayOfWeek == "MONDAY"){
-                return new MondaySchedule(properDate, mondayStartTime, mondayEndTime);
+                Schedule schedule = new MondaySchedule(properDate, mondayStartTime, mondayEndTime);
+                HomeFrame.getHomeFrame().addObservable(schedule);
+                return schedule;
             }
             if(dayOfWeek == "WEDNESDAY"){
-                return new WednesdaySchedule(properDate, wednesdayStartTime, wednesdayEndTime);
+                Schedule schedule = new WednesdaySchedule(properDate, wednesdayStartTime, wednesdayEndTime);
+                HomeFrame.getHomeFrame().addObservable(schedule);
+                return schedule;
             }
             if(dayOfWeek == "SATURDAY"){
-                return new SaturdaySchedule(properDate, saturdayStartTime, saturdayEndTime);
+                Schedule schedule =  new SaturdaySchedule(properDate, saturdayStartTime, saturdayEndTime);
+                HomeFrame.getHomeFrame().addObservable(schedule);
+                return schedule;
             }
             if (dayOfWeek == "SUNDAY"){
-                return new SundaySchedule(properDate, sundayStartTime, sundayEndTime);
+                Schedule schedule = new SundaySchedule(properDate, sundayStartTime, sundayEndTime);
+                HomeFrame.getHomeFrame().addObservable(schedule);
+                return schedule;
             }
         }
 

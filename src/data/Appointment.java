@@ -1,11 +1,10 @@
 package data;
 
-import forms.Invoice;
-
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.LinkedList;
 
-public class Appointment {
+public class Appointment implements Observable{
 
     private int appointmentId;
     private Patient patient;
@@ -13,6 +12,7 @@ public class Appointment {
     private LocalDate date;
     private LocalTime time;
     private boolean isPaid;
+    private LinkedList<Observer> observers = new LinkedList<>();
 
     public Appointment(int appointmentId, String patientName, String patientAddress, String patientTelephoneNumber, Treatment treatment){
         this.appointmentId = appointmentId;
@@ -66,6 +66,23 @@ public class Appointment {
 
     public void pay(){
         this.isPaid = true;
+        notifyObservers();
     }
 
+    @Override
+    public void addObserver(Observer observer) {
+        observers.add(observer);
+    }
+
+    @Override
+    public void removeObserver(Observer observer) {
+        observers.remove(observer);
+    }
+
+    @Override
+    public void notifyObservers() {
+        for (Observer observer : observers) {
+            observer.update(this);
+        }
+    }
 }

@@ -1,15 +1,19 @@
 package data;
 
+import forms.HomeFrame;
+
 import java.time.LocalDate;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.TreeMap;
 import java.util.Set;
 
-public class ScheduleCollection{
+public class ScheduleCollection implements Observable{
 
     private static ScheduleCollection instance;
     private TreeMap<LocalDate, Schedule> schedules = new TreeMap<>();
     private ScheduleFactory scheduleFactory = ScheduleFactory.getScheduleFactory();
+    private LinkedList<Observer> observers = new LinkedList<>();
 
     private ScheduleCollection(){}
 
@@ -29,6 +33,7 @@ public class ScheduleCollection{
                 Schedule schedule = scheduleFactory.getSchedule(date.toString());
                 if(schedule != null) {
                     schedules.put(date, schedule);
+                    notifyObservers();
                 } else {
                     throw new Exception("This date does not allow a schedule to be created!");
                 }
@@ -67,6 +72,23 @@ public class ScheduleCollection{
 
     public int getScheduleCollectionSize(){
         return schedules.size();
+    }
+
+    @Override
+    public void addObserver(Observer observer) {
+        observers.add(observer);
+    }
+
+    @Override
+    public void removeObserver(Observer observer) {
+        observers.remove(observer);
+    }
+
+    @Override
+    public void notifyObservers() {
+        for (Observer observer : observers) {
+            observer.update(this);
+        }
     }
 
 //    public Iterator getKeyIterator() {
