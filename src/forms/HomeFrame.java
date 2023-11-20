@@ -15,7 +15,7 @@ public class HomeFrame extends JFrame implements ActionListener, Observer {
 
     //Private variable for storing the singular instance:
     private static HomeFrame instance;
-
+    private final HomeManager homeManager = HomeManager.getHomeManager();
     private LinkedList<Observable> observables = new LinkedList<>();
 
     //Table:
@@ -230,16 +230,20 @@ public class HomeFrame extends JFrame implements ActionListener, Observer {
     public void actionPerformed(ActionEvent e) {
 
         if(e.getSource() == insertButton){
+
             String patientName = patientNameField.getText();
             String patientAddress = patientAddressField.getText();
             String patientTelephoneNumber = patientPhoneNumberField.getText();
             String treatmentType = appointmentTreatmentField.getSelectedItem().toString();
-            boolean isPaid = isPaid();
-            var homeManager = HomeManager.getHomeManager();
             homeManager.insert(patientName, patientAddress, patientTelephoneNumber, treatmentType);
+
         }else if(e.getSource() == searchButton){
+
             String appointmentId = appointmentIdFieldForSearch.getText();
-            String[] attributes = HomeManager.getHomeManager().search(appointmentId);
+            Command<String[]> searchCommand = new SearchAppointmentCommand(appointmentId);
+            homeManager.setCommand(searchCommand);
+            homeManager.executeCommand();
+            String[] attributes = searchCommand.getResult();
             if(attributes != null) {
                 System.out.println(attributes);
                 this.appointmentIdField.setText(String.valueOf(attributes[0]));
@@ -254,18 +258,25 @@ public class HomeFrame extends JFrame implements ActionListener, Observer {
                     appointmentNoPaidButton.setSelected(true);
                 }
             }
+
         }else if(e.getSource() == editButton){
+
             String appointmentId = appointmentIdField.getText();
             String patientName = patientNameField.getText();
             String patientAddress = patientAddressField.getText();
             String patientTelephoneNumber = patientPhoneNumberField.getText();
             String treatmentType = appointmentTreatmentField.getSelectedItem().toString();
-            var homeManager = HomeManager.getHomeManager();
-            homeManager.edit(appointmentId, patientName, patientAddress, patientTelephoneNumber, treatmentType);
+            Command editCommand = new EditAppointmentCommand(appointmentId, patientName, patientAddress, patientTelephoneNumber, treatmentType);
+            homeManager.setCommand(editCommand);
+            homeManager.executeCommand();
+
         }else if(e.getSource() == payButton){
+
             String appointmentId = appointmentIdField.getText();
-            var homeManager = HomeManager.getHomeManager();
-            homeManager.pay(appointmentId);
+            Command payCommand = new PayAppointmentCommand(appointmentId);
+            homeManager.setCommand(payCommand);
+            homeManager.executeCommand();
+
         }
 
     }
@@ -291,16 +302,28 @@ public class HomeFrame extends JFrame implements ActionListener, Observer {
 
     private String[][] getData(){
 
-        if(HomeManager.getHomeManager().getAppointmentList() == null){
-            data = new String[1][8];
-            return data;
-        }
-        return HomeManager.getHomeManager().getAppointmentList();
+        Command<String[][]> readDataCommand = new ReadAppointmentsCommand();
+        homeManager.setCommand(readDataCommand);
+        homeManager.executeCommand();
+        String[][] data = readDataCommand.getResult();
+        return data;
 
     }
 
-    public void refreshHomeFrame(){
+    private void updateTable(String[][] newData) {
 
+        DefaultTableModel model = (DefaultTableModel) appointmentsTable.getModel();
+        model.setDataVector(newData, column);
+
+    }
+
+    public void addObservable(Observable observable){
+        observables.add(observable);
+        observable.addObserver(this);
+    }
+
+    @Override
+    public void update(Observable observable) {
         String[][] newData = getData();
         updateTable(newData);
 
@@ -321,24 +344,6 @@ public class HomeFrame extends JFrame implements ActionListener, Observer {
         appointmentTreatmentField.repaint();
         appointmentYesPaidButton.repaint();
         appointmentNoPaidButton.repaint();
-
-    }
-
-    private void updateTable(String[][] newData) {
-
-        DefaultTableModel model = (DefaultTableModel) appointmentsTable.getModel();
-        model.setDataVector(newData, column);
-
-    }
-
-    public void addObservable(Observable observable){
-        observables.add(observable);
-        observable.addObserver(this);
-    }
-
-    @Override
-    public void update(Observable observable) {
-        refreshHomeFrame();
     }
 
 }

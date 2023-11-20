@@ -1,7 +1,6 @@
 package forms;
 
 import javax.swing.*;
-//A GUI window for containing other GUI components.
 import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;

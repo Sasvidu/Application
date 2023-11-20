@@ -1,5 +1,7 @@
 package data;
 
+import forms.HomeFrame;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Iterator;
@@ -26,6 +28,7 @@ public abstract class Schedule implements Observable{
                         appointment.setTime(availableTime);
                         listOfAppointments.addLast(appointment);
                         availableTime = newAvailableTime;
+                        HomeFrame.getHomeFrame().addObservable(appointment);
                         notifyObservers();
                         return "Success";
                     }else{
