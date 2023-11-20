@@ -14,7 +14,8 @@ public class Invoice extends JFrame {
     private LocalTime paymentTime;
     private Appointment appointment;
 
-    private final Color fontColor = new Color(255, 255, 255);
+    private final Color fontColor = new Color(0, 0, 0);
+    private final Color backgroundColor = new Color(0xDFF2FF);
     private final Font font = new Font("Montserrat", Font.PLAIN, 20);
 
     private final int labelWidth = 200;
@@ -141,7 +142,7 @@ public class Invoice extends JFrame {
         treatmentValueLabel.setHorizontalAlignment(JLabel.CENTER);
         treatmentValueLabel.setBounds(labelValueX, 90 + (6 * (labelHeight + 10)), labelWidth, labelHeight);
 
-        JLabel feeValueLabel = new JLabel(String.valueOf(this.appointment.getTreatment().getFee()));
+        JLabel feeValueLabel = new JLabel(String.valueOf(this.appointment.getTreatment().getFee()) + "0");
         feeValueLabel.setForeground(fontColor);
         feeValueLabel.setFont(font);
         feeValueLabel.setVerticalAlignment(JLabel.CENTER);
@@ -156,7 +157,7 @@ public class Invoice extends JFrame {
         this.setSize(width, height);
         this.setLayout(null);
         this.setLocationRelativeTo(null);
-        this.getContentPane().setBackground(Color.MAGENTA);
+        this.getContentPane().setBackground(backgroundColor);
 
         this.add(dateLabel);
         this.add(timeLabel);

@@ -71,17 +71,28 @@ public class HomeManager {
             ScheduleCollection schedules = ScheduleCollection.getScheduleCollection();
             //Get the appointment object from the appointment hashmap
             Appointment appointment = appointments.getAppointment(properAppointmentId);
-            //Get the appointment date and obtain the relevant schedule
-            LocalDate date = appointment.getDate();
-            Schedule schedule = schedules.getSchedule(date);
-            //Get the relevant treatment object
-            Treatment treatment = TreatmentFactory.getTreatmentFactory().getTreatment(treatmentType);
-            //Call the update method for the schedule
-            schedule.editAppointment(appointment, patientName, patientAddress, patientTelephoneNumber, treatment);
-            //Show a success message
-            JOptionPane.showMessageDialog(null, "Appointment successfully edited", "Success!", JOptionPane.INFORMATION_MESSAGE);
-            //Reload data
-            refreshHomeFrame();
+
+            //Check if the appointment has already been paid for
+            if(appointment.isPaid()){
+
+                //Display a message box giving a message that the appointment has already been paid for
+                JOptionPane.showMessageDialog(null, "Appointment has already been paid for.", "Already Paid", JOptionPane.INFORMATION_MESSAGE);
+
+            }else{
+
+                //Get the appointment date and obtain the relevant schedule
+                LocalDate date = appointment.getDate();
+                Schedule schedule = schedules.getSchedule(date);
+                //Get the relevant treatment object
+                Treatment treatment = TreatmentFactory.getTreatmentFactory().getTreatment(treatmentType);
+                //Call the update method for the schedule
+                schedule.editAppointment(appointment, patientName, patientAddress, patientTelephoneNumber, treatment);
+                //Show a success message
+                JOptionPane.showMessageDialog(null, "Appointment successfully edited", "Success!", JOptionPane.INFORMATION_MESSAGE);
+                //Reload data
+                refreshHomeFrame();
+
+            }
 
         }catch (Exception e){
 
@@ -98,24 +109,35 @@ public class HomeManager {
 
             //Convert the appointment id into an integer
             int properAppointmentId = Integer.parseInt(appointmentId);
-            //Get the appointment object from the appointment hashmap
+            //Get the appointment object from the appointments hashmap
             Appointment appointment = appointments.getAppointment(properAppointmentId);
-            //Get the value of the fee
-            String fee = String.valueOf(appointment.getTreatment().getFee());
-            //Display it in a message box and await user's reply
-            int confirmation = JOptionPane.showConfirmDialog(null, "The payment is : LkR. " + fee + "0/=\n\nConfirm Payment", "Payment Confirmation", JOptionPane.YES_NO_OPTION);
 
-            //See whether the reply is a confirmation
-            if(confirmation == 0){
+            //Check if the appointment has already been paid for
+            if(appointment.isPaid()){
 
-                //Update the data
-                appointment.pay();
-                //Show success message
-                JOptionPane.showMessageDialog(null, "Payment Successful!", "Paid", JOptionPane.INFORMATION_MESSAGE);
-                //Reload the data
-                refreshHomeFrame();
-                //Display an invoice
-                new Invoice(appointment);
+                //Display a message box giving a message that the appointment has already been paid for
+                JOptionPane.showMessageDialog(null, "Appointment has already been paid for.", "Already Paid", JOptionPane.INFORMATION_MESSAGE);
+
+            }else{
+
+                //Get the value of the fee
+                String fee = String.valueOf(appointment.getTreatment().getFee());
+                //Display it in a message box and await user's reply
+                int confirmation = JOptionPane.showConfirmDialog(null, "The payment is : LkR. " + fee + "0/=\n\nConfirm Payment", "Payment Confirmation", JOptionPane.YES_NO_OPTION);
+
+                //See whether the reply is a confirmation
+                if(confirmation == 0){
+
+                    //Update the data
+                    appointment.pay();
+                    //Show success message
+                    JOptionPane.showMessageDialog(null, "Payment Successful!", "Paid", JOptionPane.INFORMATION_MESSAGE);
+                    //Reload the data
+                    refreshHomeFrame();
+                    //Display an invoice
+                    new Invoice(appointment);
+
+                }
 
             }
 
