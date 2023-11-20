@@ -1,11 +1,13 @@
 package forms;
 
 import com.sasvidu.HomeManager;
+import data.*;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.LinkedList;
 
 public class HomeFrame extends JFrame implements ActionListener {
 
@@ -281,9 +283,10 @@ public class HomeFrame extends JFrame implements ActionListener {
 
     }
 
-    public void removeHomeFrame(){
+    public void update(){
         instance = null;
         this.dispose();
+        HomeFrame.getHomeFrame();
     }
 
     private String[][] getData(){
@@ -292,6 +295,12 @@ public class HomeFrame extends JFrame implements ActionListener {
             return data;
         }
         return HomeManager.getHomeManager().getAppointmentList();
+    }
+
+    public void refreshHomeFrame(){
+        instance = null;
+        this.dispose();
+        HomeFrame.getHomeFrame();
     }
 
 }

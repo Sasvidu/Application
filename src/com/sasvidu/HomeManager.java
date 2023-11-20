@@ -90,7 +90,7 @@ public class HomeManager {
                 //Show a success message
                 JOptionPane.showMessageDialog(null, "Appointment successfully edited", "Success!", JOptionPane.INFORMATION_MESSAGE);
                 //Reload data
-                refreshHomeFrame();
+                HomeFrame.getHomeFrame().refreshHomeFrame();
 
             }
 
@@ -124,19 +124,16 @@ public class HomeManager {
                 String fee = String.valueOf(appointment.getTreatment().getFee());
                 //Display it in a message box and await user's reply
                 int confirmation = JOptionPane.showConfirmDialog(null, "The payment is : LkR. " + fee + "0/=\n\nConfirm Payment", "Payment Confirmation", JOptionPane.YES_NO_OPTION);
-
                 //See whether the reply is a confirmation
-                if(confirmation == 0){
-
+                if (confirmation == 0) {
                     //Update the data
                     appointment.pay();
                     //Show success message
                     JOptionPane.showMessageDialog(null, "Payment Successful!", "Paid", JOptionPane.INFORMATION_MESSAGE);
                     //Reload the data
-                    refreshHomeFrame();
+                    HomeFrame.getHomeFrame().refreshHomeFrame();
                     //Display an invoice
                     new Invoice(appointment);
-
                 }
 
             }
@@ -192,12 +189,6 @@ public class HomeManager {
 
             return resultArray;
         }
-    }
-
-    //Re-instantiate home frame
-    private void refreshHomeFrame(){
-        HomeFrame.getHomeFrame().removeHomeFrame();
-        HomeFrame.getHomeFrame();
     }
 
 }

@@ -229,7 +229,7 @@ public class InsertManager {
             //Add the appointment to a hashmap of appointments if the appointment was added to the schedule
             appointments.addAppointment(appointmentId, appointment);
             //Re-instantiate the home window so that its table is updated
-            refreshHomeFrame();
+            HomeFrame.getHomeFrame().refreshHomeFrame();
             //Return a success message
             return success;
 
@@ -240,12 +240,6 @@ public class InsertManager {
 
         }
 
-    }
-
-    //Method to re-instantiate the home window
-    private void refreshHomeFrame(){
-        HomeFrame.getHomeFrame().removeHomeFrame();
-        HomeFrame.getHomeFrame();
     }
 
 }
