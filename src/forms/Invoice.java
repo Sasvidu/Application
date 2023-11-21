@@ -1,6 +1,7 @@
 package forms;
 
 import data.Appointment;
+import data.InvoiceCollection;
 
 import javax.swing.*;
 import java.awt.*;
@@ -29,7 +30,7 @@ public class Invoice extends JFrame {
 
     public Invoice(Appointment appointment){
 
-        //Initilization:
+        //Initialization:
         this.appointment = appointment;
         this.paymentDate = LocalDate.now();
         this.paymentTime = LocalTime.now();
@@ -179,6 +180,13 @@ public class Invoice extends JFrame {
 
         this.setVisible(true);
 
+        int appointmentId = appointment.getAppointmentId();
+        InvoiceCollection.getInvoiceCollection().addInvoice(appointmentId, this);
+
+    }
+
+    public Appointment getAppointment(){
+        return this.appointment;
     }
 
 }

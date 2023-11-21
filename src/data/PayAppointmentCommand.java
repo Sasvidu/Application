@@ -32,7 +32,7 @@ public class PayAppointmentCommand implements Command<Void>{
                 //Get the value of the fee
                 String fee = String.valueOf(appointment.getTreatment().getFee());
                 //Display it in a message box and await user's reply
-                int confirmation = JOptionPane.showConfirmDialog(null, "The payment is : LkR. " + fee + "0/=\n\nConfirm Payment", "Payment Confirmation", JOptionPane.YES_NO_OPTION);
+                int confirmation = JOptionPane.showConfirmDialog(null, "The payment is : LKR. " + fee + "0/=\n\nConfirm Payment", "Payment Confirmation", JOptionPane.YES_NO_OPTION);
                 //See whether the reply is a confirmation
                 if (confirmation == 0) {
                     //Update the data

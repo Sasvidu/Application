@@ -28,6 +28,7 @@ public class HomeFrame extends JFrame implements ActionListener, Observer {
     private JButton insertButton;
     private JButton payButton;
     private JButton editButton;
+    private JButton invoiceButton;
     private JButton undoButton;
     private JButton redoButton;
 
@@ -68,7 +69,7 @@ public class HomeFrame extends JFrame implements ActionListener, Observer {
 
         int searchButtonWidth = 160;
         int searchButtonHeight = 30;
-        int formButtonWidth = 130;
+        int formButtonWidth = 100;
         int formButtonHeight = 30;
 
         int formButtonMargin = 20;
@@ -166,7 +167,7 @@ public class HomeFrame extends JFrame implements ActionListener, Observer {
         insertButton.addActionListener(this);
 
         payButton = new JButton();
-        payButton.setText("PAYMENT");
+        payButton.setText("PAY");
         payButton.setFont(new Font("Montserrat", Font.PLAIN, 14));
         payButton.setVerticalAlignment(JButton.CENTER);
         payButton.setHorizontalAlignment(JButton.CENTER);
@@ -185,6 +186,16 @@ public class HomeFrame extends JFrame implements ActionListener, Observer {
         editButton.setBounds(labelX + (2 * (formButtonWidth + formButtonMargin)), 450, formButtonWidth, formButtonHeight);
         editButton.addActionListener(this);
 
+        invoiceButton = new JButton();
+        invoiceButton.setText("INVOICE");
+        invoiceButton.setFont(new Font("Montserrat", Font.PLAIN, 14));
+        invoiceButton.setVerticalAlignment(JButton.CENTER);
+        invoiceButton.setHorizontalAlignment(JButton.CENTER);
+        invoiceButton.setFocusable(false);
+        invoiceButton.setBackground(Color.lightGray);
+        invoiceButton.setBounds(labelX + (3 * (formButtonWidth + formButtonMargin)), 450, formButtonWidth, formButtonHeight);
+        invoiceButton.addActionListener(this);
+
         undoButton = new JButton();
         undoButton.setText("UNDO");
         undoButton.setFont(new Font("Montserrat", Font.PLAIN, 14));
@@ -192,7 +203,7 @@ public class HomeFrame extends JFrame implements ActionListener, Observer {
         undoButton.setHorizontalAlignment(JButton.CENTER);
         undoButton.setFocusable(false);
         undoButton.setBackground(Color.lightGray);
-        undoButton.setBounds(((panelWidth / 2) - 150), 490, formButtonWidth, formButtonHeight);
+        undoButton.setBounds(((panelWidth / 2) - 110), 490, formButtonWidth, formButtonHeight);
         undoButton.addActionListener(this);
 
         redoButton = new JButton();
@@ -202,7 +213,7 @@ public class HomeFrame extends JFrame implements ActionListener, Observer {
         redoButton.setHorizontalAlignment(JButton.CENTER);
         redoButton.setFocusable(false);
         redoButton.setBackground(Color.lightGray);
-        redoButton.setBounds((panelWidth / 2), 490, formButtonWidth, formButtonHeight);
+        redoButton.setBounds(((panelWidth / 2) + 10), 490, formButtonWidth, formButtonHeight);
         redoButton.addActionListener(this);
 
         // Window:
@@ -239,6 +250,7 @@ public class HomeFrame extends JFrame implements ActionListener, Observer {
         formPanel.add(insertButton);
         formPanel.add(payButton);
         formPanel.add(editButton);
+        formPanel.add(invoiceButton);
         formPanel.add(undoButton);
         formPanel.add(redoButton);
 
@@ -295,6 +307,13 @@ public class HomeFrame extends JFrame implements ActionListener, Observer {
             String appointmentId = appointmentIdField.getText();
             Command payCommand = new PayAppointmentCommand(appointmentId);
             homeManager.setCommand(payCommand);
+            homeManager.executeCommand();
+
+        }else if(e.getSource() == invoiceButton){
+
+            String appointmentId = appointmentIdField.getText();
+            Command viewCommand = new ViewInvoiceCommand(appointmentId);
+            homeManager.setCommand(viewCommand);
             homeManager.executeCommand();
 
         }else if(e.getSource() == undoButton){
