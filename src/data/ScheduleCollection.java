@@ -3,12 +3,10 @@ package data;
 import forms.HomeFrame;
 
 import java.time.LocalDate;
+import java.util.*;
 import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.TreeMap;
-import java.util.Set;
 
-public class ScheduleCollection implements Observable{
+public class ScheduleCollection implements Observable, Cloneable{
 
     private static ScheduleCollection instance;
     private TreeMap<LocalDate, Schedule> schedules = new TreeMap<>();
@@ -18,16 +16,13 @@ public class ScheduleCollection implements Observable{
     private ScheduleCollection(){}
 
     public static ScheduleCollection getScheduleCollection(){
-
         if(instance == null){
             instance = new ScheduleCollection();
         }
         return instance;
-
     }
 
     public void addSchedule(LocalDate date){
-
         try {
             if (!hasSchedule(date)) {
                 Schedule schedule = scheduleFactory.getSchedule(date.toString());
@@ -43,7 +38,6 @@ public class ScheduleCollection implements Observable{
         }catch(Exception e){
             e.printStackTrace();
         }
-
     }
 
     //Overloading
@@ -70,10 +64,6 @@ public class ScheduleCollection implements Observable{
         return set.iterator();
     }
 
-    public int getScheduleCollectionSize(){
-        return schedules.size();
-    }
-
     @Override
     public void addObserver(Observer observer) {
         observers.add(observer);
@@ -89,6 +79,28 @@ public class ScheduleCollection implements Observable{
         for (Observer observer : observers) {
             observer.update(this);
         }
+    }
+
+    public CombinedMemento saveStateToMemento() throws CloneNotSupportedException {
+        return MementoManager.getMementoManager().createMemento();
+    }
+
+    public void restoreStateFromMemento(CombinedMemento memento){
+        this.schedules = memento.getSchedules().getSchedules();
+        notifyObservers();
+    }
+
+    @Override
+    public ScheduleCollection clone() throws CloneNotSupportedException{
+        ScheduleCollection cloned = (ScheduleCollection) super.clone();
+        TreeMap<LocalDate, Schedule> clonedSchedules = new TreeMap<>();
+        for (Map.Entry<LocalDate, Schedule> entry : schedules.entrySet()) {
+            LocalDate date = entry.getKey();
+            Schedule schedule = entry.getValue().clone();
+            clonedSchedules.put(date, schedule);
+        }
+        cloned.schedules = clonedSchedules;
+        return cloned;
     }
 
 //    public Iterator getKeyIterator() {

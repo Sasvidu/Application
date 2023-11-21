@@ -28,6 +28,8 @@ public class HomeFrame extends JFrame implements ActionListener, Observer {
     private JButton insertButton;
     private JButton payButton;
     private JButton editButton;
+    private JButton undoButton;
+    private JButton redoButton;
 
     // Fields:
     private JTextField appointmentIdFieldForSearch;
@@ -93,7 +95,6 @@ public class HomeFrame extends JFrame implements ActionListener, Observer {
 
         // Labels
         JLabel appointmentIdLabelForSearch = new JLabel("Appointment ID:");
-
         JLabel appointmentIdLabel = new JLabel("Appointment ID:");
         JLabel patientNameLabel = new JLabel("Patient Name:");
         JLabel patientAddressLabel = new JLabel("Patient Address:");
@@ -106,7 +107,6 @@ public class HomeFrame extends JFrame implements ActionListener, Observer {
 
         // Set bounds for labels
         appointmentIdLabelForSearch.setBounds((panelWidth - searchButtonWidth) / 2, (searchPanelHeight * 2 / 10), searchButtonWidth, searchButtonHeight);
-
         appointmentIdLabel.setBounds(labelX, 50, labelWidth, labelHeight);
         patientNameLabel.setBounds(labelX, 110, labelWidth, labelHeight);
         patientAddressLabel.setBounds(labelX, 170, labelWidth, labelHeight);
@@ -118,7 +118,6 @@ public class HomeFrame extends JFrame implements ActionListener, Observer {
         String[] treatmentOptions = {"Cleaning" , "Whitening", "Filling", "Nerve Filling", "Root Canal Therapy"};
 
         appointmentIdFieldForSearch = new JTextField();
-
         appointmentIdField = new JTextField();
         patientNameField = new JTextField();
         patientAddressField = new JTextField();
@@ -137,7 +136,6 @@ public class HomeFrame extends JFrame implements ActionListener, Observer {
 
         // Set bounds for text fields
         appointmentIdFieldForSearch.setBounds((panelWidth - searchButtonWidth) / 2, (searchPanelHeight * 5 / 10), searchButtonWidth, searchButtonHeight);
-
         appointmentIdField.setBounds(textFieldX, 45, textFieldWidth, textFieldHeight);
         patientNameField.setBounds(textFieldX, 105, textFieldWidth, textFieldHeight);
         patientAddressField.setBounds(textFieldX, 165, textFieldWidth, textFieldHeight);
@@ -187,6 +185,26 @@ public class HomeFrame extends JFrame implements ActionListener, Observer {
         editButton.setBounds(labelX + (2 * (formButtonWidth + formButtonMargin)), 450, formButtonWidth, formButtonHeight);
         editButton.addActionListener(this);
 
+        undoButton = new JButton();
+        undoButton.setText("UNDO");
+        undoButton.setFont(new Font("Montserrat", Font.PLAIN, 14));
+        undoButton.setVerticalAlignment(JButton.CENTER);
+        undoButton.setHorizontalAlignment(JButton.CENTER);
+        undoButton.setFocusable(false);
+        undoButton.setBackground(Color.lightGray);
+        undoButton.setBounds(((panelWidth / 2) - 150), 490, formButtonWidth, formButtonHeight);
+        undoButton.addActionListener(this);
+
+        redoButton = new JButton();
+        redoButton.setText("REDO");
+        redoButton.setFont(new Font("Montserrat", Font.PLAIN, 14));
+        redoButton.setVerticalAlignment(JButton.CENTER);
+        redoButton.setHorizontalAlignment(JButton.CENTER);
+        redoButton.setFocusable(false);
+        redoButton.setBackground(Color.lightGray);
+        redoButton.setBounds((panelWidth / 2), 490, formButtonWidth, formButtonHeight);
+        redoButton.addActionListener(this);
+
         // Window:
         this.setTitle("Home");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -221,6 +239,8 @@ public class HomeFrame extends JFrame implements ActionListener, Observer {
         formPanel.add(insertButton);
         formPanel.add(payButton);
         formPanel.add(editButton);
+        formPanel.add(undoButton);
+        formPanel.add(redoButton);
 
         this.setVisible(true);
 
@@ -276,6 +296,16 @@ public class HomeFrame extends JFrame implements ActionListener, Observer {
             Command payCommand = new PayAppointmentCommand(appointmentId);
             homeManager.setCommand(payCommand);
             homeManager.executeCommand();
+
+        }else if(e.getSource() == undoButton){
+
+            homeManager.undo();
+            homeManager.undo();
+
+        }else if(e.getSource() == redoButton){
+
+            homeManager.redo();
+            homeManager.redo();
 
         }
 

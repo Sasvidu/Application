@@ -53,6 +53,16 @@ public class ReadAppointmentsCommand implements Command<String[][]>{
         }
     }
 
+    @Override
+    public void undo(){
+        MementoManager.getMementoManager().undo();
+    }
+
+    @Override
+    public void redo(){
+        MementoManager.getMementoManager().redo();
+    }
+
 
 }
 

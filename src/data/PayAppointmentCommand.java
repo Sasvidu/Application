@@ -8,6 +8,9 @@ public class PayAppointmentCommand implements Command<Void>{
     private AppointmentIdCollection appointments = AppointmentIdCollection.getAppointmentIdCollection();
     private String appointmentId;
 
+    private CombinedMemento beforeMemento;
+    private CombinedMemento afterMemento;
+
     public PayAppointmentCommand(String appointmentId){
         this.appointmentId = appointmentId;
     }
@@ -15,6 +18,8 @@ public class PayAppointmentCommand implements Command<Void>{
     @Override
     public void execute() {
         try {
+            //Capture state in a memento
+            beforeMemento = MementoManager.getMementoManager().createMemento();
             //Convert the appointment id into an integer
             int properAppointmentId = Integer.parseInt(appointmentId);
             //Get the appointment object from the appointments hashmap
@@ -32,6 +37,8 @@ public class PayAppointmentCommand implements Command<Void>{
                 if (confirmation == 0) {
                     //Update the data
                     appointment.pay();
+                    //Capture state in a memento
+                    afterMemento = MementoManager.getMementoManager().createMemento();
                     //Show success message
                     JOptionPane.showMessageDialog(null, "Payment Successful!", "Paid", JOptionPane.INFORMATION_MESSAGE);
                     //Display an invoice
@@ -48,5 +55,16 @@ public class PayAppointmentCommand implements Command<Void>{
     public Void getResult() {
         return null;
     }
+
+    @Override
+    public void undo(){
+        MementoManager.getMementoManager().undo();
+    }
+
+    @Override
+    public void redo(){
+        MementoManager.getMementoManager().redo();
+    }
+
 
 }

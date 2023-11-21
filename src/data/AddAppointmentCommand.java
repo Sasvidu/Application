@@ -5,6 +5,7 @@ package data;
 
 import com.sasvidu.InsertManager;
 
+import javax.swing.*;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
@@ -16,6 +17,9 @@ public class AddAppointmentCommand implements Command<String>{
     private AppointmentIdCollection appointments = AppointmentIdCollection.getAppointmentIdCollection();
     private TreatmentFactory treatmentFactory = TreatmentFactory.getTreatmentFactory();
     private InsertManager insertManager = InsertManager.getInsertManager();
+
+    private CombinedMemento beforeMemento;
+    private CombinedMemento afterMemento;
 
     private Date selectedDate;
     private String patientName;
@@ -42,27 +46,33 @@ public class AddAppointmentCommand implements Command<String>{
 
     @Override
     public void execute() {
-        //Call the checkDate function to see whether there is time for the appointment to be reserved for the requested date, and get the available time if there is
-        Command<String> validateCommand = new CheckDateCommand(selectedDate, treatmentType);
-        insertManager.setCommand(validateCommand);
-        insertManager.executeCommand();
-        String availableTime = validateCommand.getResult();
-        if (availableTime.matches(nullError) || availableTime.matches(unavailableError) || availableTime.matches(overflowError) || availableTime.matches(retrievalError)) {
-            //If the checkDate functiom does not return an available time, forward the error message to the GUI component, to which it can react accordingly
-            result = availableTime;
-        } else {
-            //Convert the selected date to a LocalDate object
-            LocalDate date = LocalDate.ofInstant(selectedDate.toInstant(), ZoneId.systemDefault());
-            //See if a schedule has already been created for the date:
-            if (schedules.hasSchedule(date)) {
-                //Insert the appointment into the schedule and the appointment list
-                result = insertAppointment(patientName, patientAddress, patientTelephoneNumber, treatmentType, date);
+        try {
+            //Capture state in a memento
+            beforeMemento = MementoManager.getMementoManager().createMemento();
+            //Call the checkDate function to see whether there is time for the appointment to be reserved for the requested date, and get the available time if there is
+            Command<String> validateCommand = new CheckDateCommand(selectedDate, treatmentType);
+            insertManager.setCommand(validateCommand);
+            insertManager.executeCommand();
+            String availableTime = validateCommand.getResult();
+            if (availableTime.matches(nullError) || availableTime.matches(unavailableError) || availableTime.matches(overflowError) || availableTime.matches(retrievalError)) {
+                //If the checkDate functiom does not return an available time, forward the error message to the GUI component, to which it can react accordingly
+                result = availableTime;
             } else {
-                //If a schedule is not already available, create a new one
-                schedules.addSchedule(date);
-                //Insert the appointment into the schedule and the appointment list
-                result = insertAppointment(patientName, patientAddress, patientTelephoneNumber, treatmentType, date);
+                //Convert the selected date to a LocalDate object
+                LocalDate date = LocalDate.ofInstant(selectedDate.toInstant(), ZoneId.systemDefault());
+                //See if a schedule has already been created for the date:
+                if (schedules.hasSchedule(date)) {
+                    //Insert the appointment into the schedule and the appointment list
+                    result = insertAppointment(patientName, patientAddress, patientTelephoneNumber, treatmentType, date);
+                } else {
+                    //If a schedule is not already available, create a new one
+                    schedules.addSchedule(date);
+                    //Insert the appointment into the schedule and the appointment list
+                    result = insertAppointment(patientName, patientAddress, patientTelephoneNumber, treatmentType, date);
+                }
             }
+        }catch (Exception e){
+            JOptionPane.showMessageDialog(null, "Exception occured: " + e, "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -72,7 +82,7 @@ public class AddAppointmentCommand implements Command<String>{
     }
 
     //Private method to represent the common operations for inserting an appointment into the data structures, called by the addAppointment method
-    private String insertAppointment(String patientName, String patientAddress, String patientTelephoneNumber, String treatmentType, LocalDate date) {
+    private String insertAppointment(String patientName, String patientAddress, String patientTelephoneNumber, String treatmentType, LocalDate date) throws CloneNotSupportedException {
         //Obtain the schedule for the dat
         Schedule schedule = schedules.getSchedule(date);
         //Get the object representing the treatment required
@@ -87,6 +97,8 @@ public class AddAppointmentCommand implements Command<String>{
         if (response.matches(success)) {
             //Add the appointment to a hashmap of appointments if the appointment was added to the schedule
             appointments.addAppointment(appointmentId, appointment);
+            //Capture state in a memento
+            afterMemento = MementoManager.getMementoManager().createMemento();
             //Return a success message
             return success;
         } else {
@@ -104,5 +116,16 @@ public class AddAppointmentCommand implements Command<String>{
         }
         return id;
     }
+
+    @Override
+    public void undo(){
+        MementoManager.getMementoManager().undo();
+    }
+
+    @Override
+    public void redo(){
+        MementoManager.getMementoManager().redo();
+    }
+
 
 }

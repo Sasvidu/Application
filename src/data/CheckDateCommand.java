@@ -142,4 +142,15 @@ public class CheckDateCommand implements Command<String>{
         }
     }
 
+    @Override
+    public void undo(){
+        MementoManager.getMementoManager().undo();
+    }
+
+    @Override
+    public void redo(){
+        MementoManager.getMementoManager().redo();
+    }
+
+
 }

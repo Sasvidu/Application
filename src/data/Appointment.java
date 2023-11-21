@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.LinkedList;
 
-public class Appointment implements Observable{
+public class Appointment implements Observable, Cloneable{
 
     private int appointmentId;
     private Patient patient;
@@ -85,4 +85,12 @@ public class Appointment implements Observable{
             observer.update(this);
         }
     }
+
+    @Override
+    public Appointment clone() throws CloneNotSupportedException{
+        Appointment cloned = (Appointment) super.clone();
+        cloned.patient = this.patient.clone();
+        return cloned;
+    }
+
 }

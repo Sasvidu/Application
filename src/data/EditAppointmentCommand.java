@@ -13,6 +13,9 @@ public class EditAppointmentCommand implements Command<Void> {
     private String patientAddress;
     private String patientTelephoneNumber;
 
+    private CombinedMemento beforeMemento;
+    private CombinedMemento afterMemento;
+
     public EditAppointmentCommand(String appointmentIdString, String patientName, String patientAddress, String patientTelephoneNumber, String treatmentType){
         this.appointmentIdString = appointmentIdString;
         this.patientName = patientName;
@@ -24,6 +27,8 @@ public class EditAppointmentCommand implements Command<Void> {
     @Override
     public void execute(){
         try {
+            //Capture state in a memento
+            beforeMemento = MementoManager.getMementoManager().createMemento();
             int appointmentId = Integer.parseInt(appointmentIdString);
             Appointment appointment = appointments.getAppointment(appointmentId);
             if (appointment.isPaid()) {
@@ -37,6 +42,8 @@ public class EditAppointmentCommand implements Command<Void> {
                 Treatment treatment = TreatmentFactory.getTreatmentFactory().getTreatment(treatmentType);
                 //Call the update method for the schedule
                 schedule.editAppointment(appointment, patientName, patientAddress, patientTelephoneNumber, treatment);
+                //Capture state in a memento
+                afterMemento = MementoManager.getMementoManager().createMemento();
                 //Show a success message
                 JOptionPane.showMessageDialog(null, "Appointment successfully edited", "Success!", JOptionPane.INFORMATION_MESSAGE);
             }
@@ -48,6 +55,16 @@ public class EditAppointmentCommand implements Command<Void> {
     @Override
     public Void getResult() {
         return null;
+    }
+
+    @Override
+    public void undo(){
+        MementoManager.getMementoManager().undo();
+    }
+
+    @Override
+    public void redo(){
+        MementoManager.getMementoManager().redo();
     }
 
 }

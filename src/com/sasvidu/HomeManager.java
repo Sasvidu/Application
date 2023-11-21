@@ -7,6 +7,7 @@ import forms.Invoice;
 import javax.swing.*;
 import java.time.LocalDate;
 import java.util.Map;
+import java.util.Stack;
 
 public class HomeManager {
 
@@ -14,8 +15,11 @@ public class HomeManager {
 
     //Private, class variable to hold the unique instance
     private static HomeManager instance;
-    //private field to store the current command
+    //Private field to store the current command
     private Command<?> currentCommand;
+    //Stacks to store the history of all executed commands
+    private Stack<Command<?>> commandHistory = new Stack<>();
+    private Stack<Command<?>> redoHistory = new Stack<>();
 
     //Private constructor
     private HomeManager(){}
@@ -30,11 +34,29 @@ public class HomeManager {
 
     public <T> void setCommand(Command<T> command){
         currentCommand = command;
+        commandHistory.push(command);
+        redoHistory.clear();
     }
 
     public void executeCommand(){
         if(this.currentCommand != null){
             currentCommand.execute();
+        }
+    }
+
+    public void undo(){
+        if(!commandHistory.isEmpty()){
+            Command<?> undoneCommand = commandHistory.pop();
+            redoHistory.push(undoneCommand);
+            undoneCommand.undo();
+        }
+    }
+
+    public void redo() {
+        if (!redoHistory.isEmpty()) {
+            Command<?> redoneCommand = redoHistory.pop();
+            commandHistory.push(redoneCommand);
+            redoneCommand.redo();
         }
     }
 

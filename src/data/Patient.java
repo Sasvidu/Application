@@ -1,6 +1,6 @@
 package data;
 
-public class Patient {
+public class Patient implements Cloneable{
 
     private String name;
     private String address;
@@ -35,4 +35,11 @@ public class Patient {
     public void setTelephoneNumber(String telNo) {
         this.telephoneNumber = telNo;
     }
+
+    @Override
+    public Patient clone() throws CloneNotSupportedException {
+        Patient cloned = (Patient) super.clone();
+        return cloned;
+    }
+
 }

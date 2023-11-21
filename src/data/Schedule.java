@@ -4,11 +4,10 @@ import forms.HomeFrame;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.*;
 import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.Set;
 
-public abstract class Schedule implements Observable{
+public abstract class Schedule implements Observable, Cloneable{
 
     protected LocalDate date;
     protected LocalTime startTime;
@@ -114,6 +113,17 @@ public abstract class Schedule implements Observable{
         for (Observer observer : observers) {
             observer.update(this);
         }
+    }
+
+    @Override
+    public Schedule clone() throws CloneNotSupportedException{
+        Schedule cloned = (Schedule) super.clone();
+        LinkedList<Appointment> clonedAppointments = new LinkedList<>();
+        for (Appointment appointment : listOfAppointments) {
+            clonedAppointments.addLast(appointment.clone());
+        }
+        cloned.listOfAppointments = clonedAppointments;
+        return cloned;
     }
 
 }
