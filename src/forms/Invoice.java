@@ -8,6 +8,7 @@ import java.awt.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 
 public class Invoice extends JFrame {
 
@@ -187,6 +188,32 @@ public class Invoice extends JFrame {
 
     public Appointment getAppointment(){
         return this.appointment;
+    }
+
+    @Override
+    public Invoice clone() throws CloneNotSupportedException {
+            Invoice clonedInvoice = (Invoice) super.clone();
+            clonedInvoice.appointment = this.appointment.clone();
+            return clonedInvoice;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Invoice invoiceObj = (Invoice) obj;
+        return  deepEquals(appointment, invoiceObj.appointment) &&
+                Objects.equals(paymentDate, invoiceObj.paymentDate) &&
+                Objects.equals(paymentTime, invoiceObj.paymentTime);
+    }
+
+    private boolean deepEquals(Object object1, Object object2){
+        return Objects.deepEquals(object1, object2);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(paymentDate, paymentTime, appointment);
     }
 
 }

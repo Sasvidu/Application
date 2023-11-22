@@ -67,7 +67,6 @@ public class Appointment implements Observable, Cloneable{
 
     public void pay(){
         this.isPaid = true;
-        notifyObservers();
     }
 
     @Override
