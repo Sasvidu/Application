@@ -6,12 +6,10 @@ public class CombinedMemento implements Memento{
 
     private final AppointmentIdCollection appointmentsState;
     private final ScheduleCollection schedulesState;
-    private final InvoiceCollection invoicesState;
 
-    protected CombinedMemento(AppointmentIdCollection appointments, ScheduleCollection schedules, InvoiceCollection invoices) throws CloneNotSupportedException {
+    protected CombinedMemento(AppointmentIdCollection appointments, ScheduleCollection schedules) throws CloneNotSupportedException {
         this.appointmentsState = appointments.clone();
         this.schedulesState = schedules.clone();
-        this.invoicesState = invoices.clone();
     }
 
     @Override
@@ -25,18 +23,12 @@ public class CombinedMemento implements Memento{
     }
 
     @Override
-    public InvoiceCollection getInvoices() {
-        return this.invoicesState;
-    }
-
-    @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
         if (obj == null || this.getClass() != obj.getClass()) return false;
         CombinedMemento combinedMementoObj = (CombinedMemento) obj;
         return deepEquals(this.appointmentsState, combinedMementoObj.appointmentsState) &&
-                deepEquals(this.schedulesState, combinedMementoObj.schedulesState) &&
-                deepEquals(this.invoicesState, combinedMementoObj.invoicesState);
+                deepEquals(this.schedulesState, combinedMementoObj.schedulesState);
     }
 
     private boolean deepEquals(Object object1, Object object2){

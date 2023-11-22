@@ -39,8 +39,6 @@ public class PayAppointmentCommand implements Command<Void>{
                     appointment.pay();
                     //Capture state in a memento
                     afterMemento = MementoManager.getMementoManager().createMemento();
-                    //Notify Observers
-                    appointment.notifyObservers();
                     //Show success message
                     JOptionPane.showMessageDialog(null, "Payment Successful!", "Paid", JOptionPane.INFORMATION_MESSAGE);
                     //Display an invoice

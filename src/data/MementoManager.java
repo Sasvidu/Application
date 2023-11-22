@@ -17,8 +17,7 @@ public class MementoManager {
     public CombinedMemento createMemento() throws CloneNotSupportedException {
         ScheduleCollection schedules = ScheduleCollection.getScheduleCollection();
         AppointmentIdCollection appointments = AppointmentIdCollection.getAppointmentIdCollection();
-        InvoiceCollection invoices = InvoiceCollection.getInvoiceCollection();
-        CombinedMemento memento = new CombinedMemento(appointments, schedules, invoices);
+        CombinedMemento memento = new CombinedMemento(appointments, schedules);
         careTaker.add(memento);
         return memento;
     }
@@ -28,7 +27,6 @@ public class MementoManager {
         if(undoMemento != null){
             ScheduleCollection.getScheduleCollection().restoreStateFromMemento(undoMemento);
             AppointmentIdCollection.getAppointmentIdCollection().restoreStateFromMemento(undoMemento);
-            InvoiceCollection.getInvoiceCollection().restoreStateFromMemento(undoMemento);
         }
     }
 
@@ -37,7 +35,6 @@ public class MementoManager {
         if(redoMemento != null){
             ScheduleCollection.getScheduleCollection().restoreStateFromMemento(redoMemento);
             AppointmentIdCollection.getAppointmentIdCollection().restoreStateFromMemento(redoMemento);
-            InvoiceCollection.getInvoiceCollection().restoreStateFromMemento(redoMemento);
         }
     }
 
