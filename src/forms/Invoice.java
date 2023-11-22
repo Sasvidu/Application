@@ -192,9 +192,11 @@ public class Invoice extends JFrame {
 
     @Override
     public Invoice clone() throws CloneNotSupportedException {
-            Invoice clonedInvoice = (Invoice) super.clone();
-            clonedInvoice.appointment = this.appointment.clone();
-            return clonedInvoice;
+        Invoice clonedInvoice = (Invoice) super.clone();
+        clonedInvoice.appointment = this.appointment != null ? this.appointment.clone() : null;;
+        clonedInvoice.paymentDate = LocalDate.of(this.paymentDate.getYear(), this.paymentDate.getMonth(), this.paymentDate.getDayOfMonth());
+        clonedInvoice.paymentTime = LocalTime.of(this.paymentTime.getHour(), this.paymentTime.getMinute(), this.paymentTime.getSecond());
+        return clonedInvoice;
     }
 
     @Override
@@ -213,7 +215,12 @@ public class Invoice extends JFrame {
 
     @Override
     public int hashCode() {
-        return Objects.hash(paymentDate, paymentTime, appointment);
+        int result = 1;
+        // Check for null values before invoking hashCode
+        result = 31 * result + (paymentDate != null ? paymentDate.hashCode() : 0);
+        result = 31 * result + (paymentTime != null ? paymentTime.hashCode() : 0);
+        result = 31 * result + (appointment != null ? appointment.hashCode() : 0);
+        return result;
     }
 
 }

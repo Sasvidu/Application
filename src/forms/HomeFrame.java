@@ -263,15 +263,11 @@ public class HomeFrame extends JFrame implements ActionListener, Observer {
 
         if(e.getSource() == insertButton){
 
-            System.out.println("Before insert: commandHistory size = " + homeManager.getCommandHistorySize() + ", redoHistory size = " + homeManager.getRedoHistorySize());
             String patientName = patientNameField.getText();
             String patientAddress = patientAddressField.getText();
             String patientTelephoneNumber = patientPhoneNumberField.getText();
             String treatmentType = appointmentTreatmentField.getSelectedItem().toString();
             homeManager.insert(patientName, patientAddress, patientTelephoneNumber, treatmentType);
-            System.out.println("Insert button pressed");
-            System.out.println("After insert: commandHistory size = " + homeManager.getCommandHistorySize() + ", redoHistory size = " + homeManager.getRedoHistorySize());
-            System.out.println("");
 
         }else if(e.getSource() == searchButton){
 
@@ -294,9 +290,6 @@ public class HomeFrame extends JFrame implements ActionListener, Observer {
                     appointmentNoPaidButton.setSelected(true);
                 }
             }
-            System.out.println("Search button pressed");
-            System.out.println("After search: commandHistory size = " + homeManager.getCommandHistorySize() + ", redoHistory size = " + homeManager.getRedoHistorySize());
-            System.out.println("");
 
         }else if(e.getSource() == editButton){
 
@@ -308,9 +301,6 @@ public class HomeFrame extends JFrame implements ActionListener, Observer {
             Command editCommand = new EditAppointmentCommand(appointmentId, patientName, patientAddress, patientTelephoneNumber, treatmentType);
             homeManager.setCommand(editCommand);
             homeManager.executeCommand();
-            System.out.println("Edit button pressed");
-            System.out.println("After edit: commandHistory size = " + homeManager.getCommandHistorySize() + ", redoHistory size = " + homeManager.getRedoHistorySize());
-            System.out.println("");
 
         }else if(e.getSource() == payButton){
 
@@ -318,9 +308,6 @@ public class HomeFrame extends JFrame implements ActionListener, Observer {
             Command payCommand = new PayAppointmentCommand(appointmentId);
             homeManager.setCommand(payCommand);
             homeManager.executeCommand();
-            System.out.println("Pay button pressed");
-            System.out.println("After pay: commandHistory size = " + homeManager.getCommandHistorySize() + ", redoHistory size = " + homeManager.getRedoHistorySize());
-            System.out.println("");
 
         }else if(e.getSource() == invoiceButton){
 
@@ -328,25 +315,14 @@ public class HomeFrame extends JFrame implements ActionListener, Observer {
             Command viewCommand = new ViewInvoiceCommand(appointmentId);
             homeManager.setCommandWithoutRecording(viewCommand);
             homeManager.executeCommand();
-            System.out.println("Invoice button pressed");
-            System.out.println("After invoice: commandHistory size = " + homeManager.getCommandHistorySize() + ", redoHistory size = " + homeManager.getRedoHistorySize());
-            System.out.println("");
 
         }else if(e.getSource() == undoButton){
 
-            System.out.println("Before undo: commandHistory size = " + homeManager.getCommandHistorySize() + ", redoHistory size = " + homeManager.getRedoHistorySize());
             homeManager.undo();
-            System.out.println("Undo button pressed");
-            System.out.println("After undo: commandHistory size = " + homeManager.getCommandHistorySize() + ", redoHistory size = " + homeManager.getRedoHistorySize());
-            System.out.println("");
 
         }else if(e.getSource() == redoButton){
 
-            System.out.println("After undo: commandHistory size = " + homeManager.getCommandHistorySize() + ", redoHistory size = " + homeManager.getRedoHistorySize());
             homeManager.redo();
-            System.out.println("Redo button pressed");
-            System.out.println("After redo: commandHistory size = " + homeManager.getCommandHistorySize() + ", redoHistory size = " + homeManager.getRedoHistorySize());
-            System.out.println("");
 
         }
 

@@ -43,14 +43,21 @@ public class InvoiceCollection implements Cloneable{
     }
 
     @Override
-    public InvoiceCollection clone() throws CloneNotSupportedException{
+    public InvoiceCollection clone() throws CloneNotSupportedException {
         InvoiceCollection cloned = (InvoiceCollection) super.clone();
         HashMap<Integer, Invoice> clonedInvoices = new HashMap<>();
+
         for (Map.Entry<Integer, Invoice> entry : invoices.entrySet()) {
             int id = entry.getKey();
-            Invoice invoice = entry.getValue().clone();
-            clonedInvoices.put(id, invoice);
+            Invoice originalInvoice = entry.getValue();
+
+            // Check if the original invoice is not null before cloning
+            if (originalInvoice != null) {
+                Invoice clonedInvoice = originalInvoice.clone();
+                clonedInvoices.put(id, clonedInvoice);
+            }
         }
+
         cloned.invoices = clonedInvoices;
         return cloned;
     }
