@@ -122,7 +122,6 @@ public abstract class Schedule implements Observable, Cloneable{
             clonedAppointments.addLast(appointment.clone());
         }
         cloned.listOfAppointments = clonedAppointments;
-        System.out.println("Schedule Cloned");
         return cloned;
     }
 

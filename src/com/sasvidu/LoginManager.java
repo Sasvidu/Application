@@ -7,7 +7,7 @@ public class LoginManager {
 
     //This class is used to implement the functionality of the Login Form GUI component. It is a singleton.
 
-    ////Private, class variable to hold the unique instance
+    //Private, class variable to hold the unique instance
     private static LoginManager instance;
 
     //Declare the users of the system

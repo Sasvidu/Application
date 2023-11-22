@@ -38,6 +38,11 @@ public class HomeManager {
         redoHistory.clear();
     }
 
+    public <T> void setCommandWithoutRecording(Command<T> command){
+        currentCommand = command;
+    }
+
+
     public void executeCommand(){
         if(this.currentCommand != null){
             currentCommand.execute();
@@ -68,6 +73,14 @@ public class HomeManager {
     protected void addCommand(Command<?> command){
         commandHistory.push(command);
         redoHistory.clear();
+    }
+
+    public int getCommandHistorySize() {
+        return commandHistory.size();
+    }
+
+    public int getRedoHistorySize() {
+        return redoHistory.size();
     }
 
 }

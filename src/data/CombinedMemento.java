@@ -6,10 +6,12 @@ public class CombinedMemento implements Memento{
 
     private final AppointmentIdCollection appointmentsState;
     private final ScheduleCollection schedulesState;
+    private final InvoiceCollection invoicesState;
 
-    protected CombinedMemento(AppointmentIdCollection appointments, ScheduleCollection schedules) throws CloneNotSupportedException {
+    protected CombinedMemento(AppointmentIdCollection appointments, ScheduleCollection schedules, InvoiceCollection invoices) throws CloneNotSupportedException {
         this.appointmentsState = appointments.clone();
         this.schedulesState = schedules.clone();
+        this.invoicesState - invoices.clone();
     }
 
     @Override

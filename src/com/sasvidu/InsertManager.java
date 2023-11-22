@@ -58,6 +58,7 @@ public class InsertManager {
 
         Command<String> validateCommand = new CheckDateCommand(selectedDate, treatmentType);
         this.setCheckCommand(validateCommand);
+        this.executeCommand();
         String response = validateCommand.getResult();
         switch (response) {
             case "Null Error":
