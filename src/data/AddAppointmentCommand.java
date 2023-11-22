@@ -51,7 +51,7 @@ public class AddAppointmentCommand implements Command<String>{
             beforeMemento = MementoManager.getMementoManager().createMemento();
             //Call the checkDate function to see whether there is time for the appointment to be reserved for the requested date, and get the available time if there is
             Command<String> validateCommand = new CheckDateCommand(selectedDate, treatmentType);
-            insertManager.setCommand(validateCommand);
+            insertManager.setCheckCommand(validateCommand);
             insertManager.executeCommand();
             String availableTime = validateCommand.getResult();
             if (availableTime.matches(nullError) || availableTime.matches(unavailableError) || availableTime.matches(overflowError) || availableTime.matches(retrievalError)) {
@@ -61,15 +61,14 @@ public class AddAppointmentCommand implements Command<String>{
                 //Convert the selected date to a LocalDate object
                 LocalDate date = LocalDate.ofInstant(selectedDate.toInstant(), ZoneId.systemDefault());
                 //See if a schedule has already been created for the date:
-                if (schedules.hasSchedule(date)) {
-                    //Insert the appointment into the schedule and the appointment list
-                    result = insertAppointment(patientName, patientAddress, patientTelephoneNumber, treatmentType, date);
-                } else {
+                if (!schedules.hasSchedule(date)) {
                     //If a schedule is not already available, create a new one
                     schedules.addSchedule(date);
-                    //Insert the appointment into the schedule and the appointment list
-                    result = insertAppointment(patientName, patientAddress, patientTelephoneNumber, treatmentType, date);
                 }
+                //Insert the appointment into the schedule and the appointment list
+                result = insertAppointment(patientName, patientAddress, patientTelephoneNumber, treatmentType, date);
+                //Capture state in a memento
+                afterMemento = MementoManager.getMementoManager().createMemento();
             }
         }catch (Exception e){
             JOptionPane.showMessageDialog(null, "Exception occured: " + e, "Error", JOptionPane.ERROR_MESSAGE);
@@ -97,8 +96,6 @@ public class AddAppointmentCommand implements Command<String>{
         if (response.matches(success)) {
             //Add the appointment to a hashmap of appointments if the appointment was added to the schedule
             appointments.addAppointment(appointmentId, appointment);
-            //Capture state in a memento
-            afterMemento = MementoManager.getMementoManager().createMemento();
             //Return a success message
             return success;
         } else {

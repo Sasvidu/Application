@@ -3,6 +3,7 @@ package data;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.LinkedList;
+import java.util.Objects;
 
 public class Appointment implements Observable, Cloneable{
 
@@ -91,6 +92,28 @@ public class Appointment implements Observable, Cloneable{
         Appointment cloned = (Appointment) super.clone();
         cloned.patient = this.patient.clone();
         return cloned;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Appointment appointmentObj = (Appointment) obj;
+        return appointmentId == appointmentObj.appointmentId &&
+                deepEquals(patient, appointmentObj.patient) &&
+                Objects.equals(treatment, appointmentObj.treatment) &&
+                Objects.equals(date, appointmentObj.date) &&
+                Objects.equals(time, appointmentObj.time) &&
+                isPaid == appointmentObj.isPaid;
+    }
+
+    private boolean deepEquals(Object object1, Object object2){
+        return Objects.deepEquals(object1, object2);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(appointmentId, patient, treatment, date, time, isPaid);
     }
 
 }

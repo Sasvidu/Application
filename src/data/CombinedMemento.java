@@ -27,8 +27,12 @@ public class CombinedMemento implements Memento{
         if (this == obj) return true;
         if (obj == null || this.getClass() != obj.getClass()) return false;
         CombinedMemento combinedMementoObj = (CombinedMemento) obj;
-        return Objects.equals(this.appointmentsState, combinedMementoObj.appointmentsState) &&
-                Objects.equals(this.schedulesState, combinedMementoObj.schedulesState);
+        return deepEquals(this.appointmentsState, combinedMementoObj.appointmentsState) &&
+                deepEquals(this.schedulesState, combinedMementoObj.schedulesState);
+    }
+
+    private boolean deepEquals(Object object1, Object object2){
+        return Objects.deepEquals(object1, object2);
     }
 
 }

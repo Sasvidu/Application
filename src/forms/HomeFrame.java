@@ -166,16 +166,6 @@ public class HomeFrame extends JFrame implements ActionListener, Observer {
         insertButton.setBounds(labelX, 450, formButtonWidth, formButtonHeight);
         insertButton.addActionListener(this);
 
-        payButton = new JButton();
-        payButton.setText("PAY");
-        payButton.setFont(new Font("Montserrat", Font.PLAIN, 14));
-        payButton.setVerticalAlignment(JButton.CENTER);
-        payButton.setHorizontalAlignment(JButton.CENTER);
-        payButton.setFocusable(false);
-        payButton.setBackground(Color.lightGray);
-        payButton.setBounds(labelX + (formButtonWidth + formButtonMargin), 450, formButtonWidth, formButtonHeight);
-        payButton.addActionListener(this);
-
         editButton = new JButton();
         editButton.setText("UPDATE");
         editButton.setFont(new Font("Montserrat", Font.PLAIN, 14));
@@ -183,8 +173,18 @@ public class HomeFrame extends JFrame implements ActionListener, Observer {
         editButton.setHorizontalAlignment(JButton.CENTER);
         editButton.setFocusable(false);
         editButton.setBackground(Color.lightGray);
-        editButton.setBounds(labelX + (2 * (formButtonWidth + formButtonMargin)), 450, formButtonWidth, formButtonHeight);
+        editButton.setBounds(labelX + (formButtonWidth + formButtonMargin), 450, formButtonWidth, formButtonHeight);
         editButton.addActionListener(this);
+
+        payButton = new JButton();
+        payButton.setText("PAY");
+        payButton.setFont(new Font("Montserrat", Font.PLAIN, 14));
+        payButton.setVerticalAlignment(JButton.CENTER);
+        payButton.setHorizontalAlignment(JButton.CENTER);
+        payButton.setFocusable(false);
+        payButton.setBackground(Color.lightGray);
+        payButton.setBounds(labelX + (2 * (formButtonWidth + formButtonMargin)), 450, formButtonWidth, formButtonHeight);
+        payButton.addActionListener(this);
 
         invoiceButton = new JButton();
         invoiceButton.setText("INVOICE");
@@ -319,12 +319,12 @@ public class HomeFrame extends JFrame implements ActionListener, Observer {
         }else if(e.getSource() == undoButton){
 
             homeManager.undo();
-            homeManager.undo();
+            //homeManager.undo();
 
         }else if(e.getSource() == redoButton){
 
             homeManager.redo();
-            homeManager.redo();
+            //homeManager.redo();
 
         }
 

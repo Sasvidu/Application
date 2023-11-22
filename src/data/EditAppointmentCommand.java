@@ -44,6 +44,8 @@ public class EditAppointmentCommand implements Command<Void> {
                 schedule.editAppointment(appointment, patientName, patientAddress, patientTelephoneNumber, treatment);
                 //Capture state in a memento
                 afterMemento = MementoManager.getMementoManager().createMemento();
+                //Notify Observers
+                schedule.notifyObservers();
                 //Show a success message
                 JOptionPane.showMessageDialog(null, "Appointment successfully edited", "Success!", JOptionPane.INFORMATION_MESSAGE);
             }

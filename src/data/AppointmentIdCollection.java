@@ -2,6 +2,7 @@ package data;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class AppointmentIdCollection implements Cloneable {
 
@@ -53,6 +54,23 @@ public class AppointmentIdCollection implements Cloneable {
         }
         cloned.appointments = clonedAppointments;
         return cloned;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        AppointmentIdCollection appointmentsObj = (AppointmentIdCollection) obj;
+        return deepEquals(this.appointments, appointmentsObj.appointments);
+    }
+
+    private boolean deepEquals(Object object1, Object object2){
+        return Objects.deepEquals(object1, object2);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(appointments);
     }
 
 }

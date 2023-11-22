@@ -65,4 +65,9 @@ public class HomeManager {
         new InsertFrame(patientName, patientAddress, patientTelephoneNumber, treatmentType);
     }
 
+    protected void addCommand(Command<?> command){
+        commandHistory.push(command);
+        redoHistory.clear();
+    }
+
 }

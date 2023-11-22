@@ -2,6 +2,7 @@ package data;
 
 import forms.HomeFrame;
 
+import java.sql.SQLOutput;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.Iterator;
@@ -37,6 +38,7 @@ public class ScheduleCollection implements Observable, Cloneable{
             }
         }catch(Exception e){
             e.printStackTrace();
+            System.out.println(e);
         }
     }
 
@@ -101,6 +103,23 @@ public class ScheduleCollection implements Observable, Cloneable{
         }
         cloned.schedules = clonedSchedules;
         return cloned;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        ScheduleCollection schedulesObj = (ScheduleCollection) obj;
+        return deepEquals(this.schedules, schedulesObj.schedules);
+    }
+
+    private boolean deepEquals(Object object1, Object object2){
+        return Objects.deepEquals(object1, object2);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(schedules);
     }
 
 //    public Iterator getKeyIterator() {

@@ -41,6 +41,11 @@ public class InsertManager {
 
     public <T> void setCommand(Command<T> command){
         currentCommand = command;
+        HomeManager.getHomeManager().addCommand(currentCommand);
+    }
+
+    public <T> void setCheckCommand(Command<T> command){
+        currentCommand = command;
     }
 
     public void executeCommand(){
@@ -52,8 +57,7 @@ public class InsertManager {
     public void checkDate(Date selectedDate, String treatmentType) {
 
         Command<String> validateCommand = new CheckDateCommand(selectedDate, treatmentType);
-        this.setCommand(validateCommand);
-        this.executeCommand();
+        this.setCheckCommand(validateCommand);
         String response = validateCommand.getResult();
         switch (response) {
             case "Null Error":
@@ -96,6 +100,7 @@ public class InsertManager {
                 break;
             case "Overflow Error":
                 JOptionPane.showMessageDialog(null, overflowErrorMessage, warningTxt, JOptionPane.WARNING_MESSAGE);
+                break;
             case "Retrieval Error":
                 JOptionPane.showMessageDialog(null, retrievalErrorMessage, errorTxt, JOptionPane.ERROR_MESSAGE);
                 break;

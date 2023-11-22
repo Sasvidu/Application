@@ -47,7 +47,7 @@ public abstract class Schedule implements Observable, Cloneable{
 
         int index = listOfAppointments.indexOf(oldAppointment);
         Iterator<Appointment> iterator = listOfAppointments.listIterator(index);
-        int timeChangeInMinutes = treatment.timeInMinutes - oldAppointment.getTreatment().getTimeInMinutes();
+        int timeChangeInMinutes = treatment.getTimeInMinutes() - oldAppointment.getTreatment().getTimeInMinutes();
         oldAppointment.setPatient(patientName, patientAddress, patientTelephoneNumber);
         oldAppointment.setTreatment(treatment);
         iterator.next();
@@ -57,7 +57,6 @@ public abstract class Schedule implements Observable, Cloneable{
             appointment.setTime(newTime);
         }
         availableTime = availableTime.plusMinutes(timeChangeInMinutes);
-        notifyObservers();
 
     }
 
@@ -123,7 +122,29 @@ public abstract class Schedule implements Observable, Cloneable{
             clonedAppointments.addLast(appointment.clone());
         }
         cloned.listOfAppointments = clonedAppointments;
+        System.out.println("Schedule Cloned");
         return cloned;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Schedule scheduleObj = (Schedule) obj;
+        return Objects.equals(this.date, scheduleObj.date) &&
+                Objects.equals(this.startTime, scheduleObj.startTime) &&
+                Objects.equals(this.endTime, scheduleObj.endTime) &&
+                Objects.equals(this.availableTime, scheduleObj.availableTime) &&
+                deepEquals (this.listOfAppointments, scheduleObj.listOfAppointments);
+    }
+
+    private boolean deepEquals(Object object1, Object object2){
+        return Objects.deepEquals(object1, object2);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(date, startTime, endTime, availableTime, listOfAppointments);
     }
 
 }
