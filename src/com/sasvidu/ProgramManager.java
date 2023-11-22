@@ -23,8 +23,7 @@ public class ProgramManager {
 
     //Method to open the login form
     public void startApp(){
-          //LoginForm.getLoginForm();
-        HomeFrame.getHomeFrame();
+        LoginForm.getLoginForm();
     }
 
 }
