@@ -3,14 +3,21 @@ package data;
 import forms.Invoice;
 import javax.swing.*;
 
+//Command to handle the click event of the Pay button.
+
 public class PayAppointmentCommand implements Command<Void>{
 
+    //Objects from classes that the command interacts with
     private AppointmentIdCollection appointments = AppointmentIdCollection.getAppointmentIdCollection();
+
+    //Data to identify the appointment
     private String appointmentId;
 
+    //Mementos to be created
     private CombinedMemento beforeMemento;
     private CombinedMemento afterMemento;
 
+    //Parameterized Constructor
     public PayAppointmentCommand(String appointmentId){
         this.appointmentId = appointmentId;
     }
@@ -51,11 +58,13 @@ public class PayAppointmentCommand implements Command<Void>{
         }
     }
 
+
     @Override
     public Void getResult() {
         return null;
     }
 
+    //Methods for implementing Memento
     @Override
     public void undo(){
         MementoManager.getMementoManager().undo();

@@ -10,35 +10,39 @@ import java.util.Date;
 
 public class InsertFrame extends JFrame implements ActionListener {
 
+    //Objects of other classes that the class interacts with
     private final InsertManager insertManager = InsertManager.getInsertManager();
 
+    //Variables to store the data of the patient for whom the appointment is made
     private String patientName;
     private String patientAddress;
     private String patientTelephoneNumber;
     private String treatmentType;
 
+    //Interactive Components
     private JDateChooser dateField;
     private JButton checkDateButton;
     private JButton insertButton;
 
-    //Dimensions:
+    //Dimensions
     private final int width = 600;
     private final int height = 500;
 
     public InsertFrame(String patientName, String patientAddress, String patientTelephoneNumber, String treatmentType) {
 
+        //Dimensions
         int dateLabelWidth = 70;
         int buttonWidth = 250;
 
-        //Labels:
+        //Labels
         JLabel dateLabel = new JLabel("Date:");
         dateLabel.setBounds((width / 4), (height / 5), dateLabelWidth, 20);
 
-        //Calendar:
+        //Calendar
         dateField = new JDateChooser();
         dateField.setBounds((width / 4) + dateLabelWidth, (height / 5), 250, 20);
 
-        //Buttons:
+        //Buttons
         checkDateButton = new JButton();
         checkDateButton.setText("CHECK AVAILABILITY");
         checkDateButton.setFont(new Font("Montserrat", Font.PLAIN, 14));
@@ -60,7 +64,7 @@ public class InsertFrame extends JFrame implements ActionListener {
         insertButton.setBounds((width - buttonWidth) / 2, (height * 7 / 10), buttonWidth, 50);
         insertButton.addActionListener(this);
 
-        //Window:
+        //Window
         this.setTitle("Insert Appointment");
         this.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         this.setResizable(false);
@@ -86,11 +90,13 @@ public class InsertFrame extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
 
+        //Handle Check Date Event
         if (e.getSource() == checkDateButton) {
             Date selectedDate = dateField.getDate();
             insertManager.checkDate(selectedDate, treatmentType);
         }
 
+        //Handle Insert Event
         if (e.getSource() == insertButton) {
             Date selectedDate = dateField.getDate();
             insertManager.addAppointment(selectedDate, patientName, patientAddress, patientTelephoneNumber, treatmentType, this);

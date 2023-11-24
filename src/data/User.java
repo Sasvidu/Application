@@ -10,10 +10,8 @@ public class User {
 
     //Parameterized constructor to ensure each user object has its attributes instantiated
     public User(String username, String password){
-
         this.username = username;
         this.password = password;
-
     }
 
     //Getters:

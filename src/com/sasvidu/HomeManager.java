@@ -8,7 +8,7 @@ import java.util.Stack;
 
 public class HomeManager {
 
-    //This class is used to implement the functionalities of the Home window. It is a singleton/
+    //This class is used to implement the functionalities of the Home window. It is a singleton.
 
     //Private, class variable to hold the unique instance
     private static HomeManager instance;
@@ -29,23 +29,26 @@ public class HomeManager {
         return instance;
     }
 
+    //Method to schedule a command to be executed through the HomeManager
     public <T> void setCommand(Command<T> command){
         currentCommand = command;
         commandHistory.push(command);
         redoHistory.clear();
     }
 
+    //Method to set a command to executed through the HomeManager, without adding it to the history of commands
     public <T> void setCommandWithoutRecording(Command<T> command){
         currentCommand = command;
     }
 
-
+    //Method to execute a command through the HomeManager
     public void executeCommand(){
         if(this.currentCommand != null){
             currentCommand.execute();
         }
     }
 
+    //Method to arrange the command history for an undo operation
     public void undo(){
         if(!commandHistory.isEmpty()){
             Command<?> undoneCommand = commandHistory.pop();
@@ -54,6 +57,7 @@ public class HomeManager {
         }
     }
 
+    //Method to arrange the command history for a redo operation
     public void redo() {
         if (!redoHistory.isEmpty()) {
             Command<?> redoneCommand = redoHistory.pop();
@@ -67,21 +71,15 @@ public class HomeManager {
         new InsertFrame(patientName, patientAddress, patientTelephoneNumber, treatmentType);
     }
 
+    //Method to handle the click event of the view button for the appointments of a patient
     public void view(String patientName){
         new ViewAppointmentsFrame(patientName);
     }
 
+    //Method to add a command executed elsewhere to the command history stack
     protected void addCommand(Command<?> command){
         commandHistory.push(command);
         redoHistory.clear();
-    }
-
-    public int getCommandHistorySize() {
-        return commandHistory.size();
-    }
-
-    public int getRedoHistorySize() {
-        return redoHistory.size();
     }
 
 }

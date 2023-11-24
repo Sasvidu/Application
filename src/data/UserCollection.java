@@ -13,22 +13,19 @@ public class UserCollection implements Collection{
 
         @Override
         public boolean hasNext() {
-
             if(index < users.length){
                 return true;
             }
             return false;
-
         }
 
         @Override
         public User next() {
-
             if(this.hasNext()){
-                return users[index++]; //Return the next element (TO the caller's perspective) and increment the index.
+                //Return the next element (TO the caller's perspective) and increment the index.
+                return users[index++];
             }
             return null;
-
         }
 
     }
@@ -40,19 +37,15 @@ public class UserCollection implements Collection{
 
     //Method to retrieve the singular instance:
     public static UserCollection getUserCollection(User[] users){
-
         if(instance == null){
             instance = new UserCollection(users);
         }
         return instance;
-
     }
 
     @Override
     public Iterator getIterator() {
-
         return new UserCollectionIterator();
-
     }
 
 }

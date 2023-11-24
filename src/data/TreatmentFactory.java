@@ -2,6 +2,7 @@ package data;
 
 public class TreatmentFactory {
 
+    //Treatment duration and fee data
     private final double cleaningFee = 4000.00;
     private final double whiteningFee = 5000.00;
     private final double fillingFee = 25000.00;
@@ -14,21 +15,22 @@ public class TreatmentFactory {
     private final short nerveFillingTime = 60;
     private final short rootCanalTherapyTime = 75;
 
+    //Private class variable for storing the unique instance
     private static TreatmentFactory instance;
 
+    //Private constructor
     private TreatmentFactory(){}
 
+    //Public method for retrieving the schedule factory
     public static TreatmentFactory getTreatmentFactory(){
-
         if(instance == null){
             instance = new TreatmentFactory();
         }
         return instance;
-
     }
 
+    //Method for creation of the suitable treatment
     public Treatment getTreatment(String treatmentType){
-
         if(treatmentType == null || treatmentType == ""){
             return null;
         }else if(treatmentType.matches("Cleaning")){
@@ -43,7 +45,6 @@ public class TreatmentFactory {
             return RootCanalTherapy.getRootCanalTherapy(treatmentType, rootCanalTherapyFee, rootCanalTherapyTime);
         }
         return null;
-
     }
 
 }

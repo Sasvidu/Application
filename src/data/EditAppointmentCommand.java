@@ -1,21 +1,28 @@
 package data;
 
+//Command to handle the click event of the appointment button.
+
 import javax.swing.*;
 import java.time.LocalDate;
 
 public class EditAppointmentCommand implements Command<Void> {
 
+    //Objects from classes that the command interacts with
     private AppointmentIdCollection appointments = AppointmentIdCollection.getAppointmentIdCollection();
     private ScheduleCollection schedules = ScheduleCollection.getScheduleCollection();
+
+    //Mementos to be created
+    private CombinedMemento beforeMemento;
+    private CombinedMemento afterMemento;
+
+    //New data for the appointment
     private String appointmentIdString;
     private String treatmentType;
     private String patientName;
     private String patientAddress;
     private String patientTelephoneNumber;
 
-    private CombinedMemento beforeMemento;
-    private CombinedMemento afterMemento;
-
+    //Parameterized constructor to initialize the variable
     public EditAppointmentCommand(String appointmentIdString, String patientName, String patientAddress, String patientTelephoneNumber, String treatmentType){
         this.appointmentIdString = appointmentIdString;
         this.patientName = patientName;
@@ -59,6 +66,7 @@ public class EditAppointmentCommand implements Command<Void> {
         return null;
     }
 
+    //Methods for implementing Memento
     @Override
     public void undo(){
         MementoManager.getMementoManager().undo();

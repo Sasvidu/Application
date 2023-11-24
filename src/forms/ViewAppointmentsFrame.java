@@ -12,30 +12,31 @@ import java.awt.*;
 
 public class ViewAppointmentsFrame extends JFrame {
 
+    //Private class variable to store the unique instance
     private HomeManager homeManager = HomeManager.getHomeManager();
 
     //Name of the patient
     private String patientName;
 
-    //Data:
+    //Data
     private String column[] = {"Date", "Time", "App. Id", "Name", "Address", "Tel. No", "Treatment", "Paid"};
 
-    //Table:
+    //Table
     private TableModel patientAppointmentsTableModel;
     private JTable patientAppointmentsTable;
     private JScrollPane patientAppointmentsTableScrollPane;
 
-    //Declare Dimensions:
+    //Declare Dimensions
     static final int width = 1000;
     static final int height = 700;
 
     public ViewAppointmentsFrame(String patientName){
 
+        //Initialization
         this.patientName = patientName;
-
         String[][] data = getData();
 
-        // Table:
+        // Table
         patientAppointmentsTableModel = new DefaultTableModel(data, column);
         patientAppointmentsTable = new JTable(patientAppointmentsTableModel);
         patientAppointmentsTable.setRowHeight(30);
@@ -44,6 +45,7 @@ public class ViewAppointmentsFrame extends JFrame {
         patientAppointmentsTableScrollPane = new JScrollPane(patientAppointmentsTable);
         patientAppointmentsTableScrollPane.setBounds(0, 0, width, height);
 
+        //Window
         this.setTitle("Patient : " + patientName);
         this.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         this.setSize(width, height);
@@ -56,6 +58,7 @@ public class ViewAppointmentsFrame extends JFrame {
 
     }
 
+    //Method to retrieve the data for the table
     private String[][] getData(){
 
         Command<String[][]> readDataCommand = new ReadPatientAppointmentsCommand(patientName);

@@ -1,14 +1,16 @@
 package data;
 
-import forms.Invoice;
-
 import javax.swing.*;
 
 public class ViewInvoiceCommand implements Command<Void>{
 
+    //Objects from classes that the command interacts with
     private AppointmentIdCollection appointments = AppointmentIdCollection.getAppointmentIdCollection();
+
+    //Data variable for storing the appointment Id to be read
     private String appointmentId;
 
+    //Parametized Constructor
     public ViewInvoiceCommand(String appointmentId){
         this.appointmentId = appointmentId;
     }
@@ -38,6 +40,7 @@ public class ViewInvoiceCommand implements Command<Void>{
         return null;
     }
 
+    //Methods for implementing Memento
     @Override
     public void undo(){
         MementoManager.getMementoManager().undo();

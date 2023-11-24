@@ -7,14 +7,17 @@ import java.util.Objects;
 
 public class Appointment implements Observable, Cloneable{
 
+    //Data to be stored for an appointment
     private int appointmentId;
     private Patient patient;
     private Treatment treatment;
     private LocalDate date;
     private LocalTime time;
     private boolean isPaid;
+    //List of observers
     private LinkedList<Observer> observers = new LinkedList<>();
 
+    //Parametrized constructor that ensures all fields are initialized
     public Appointment(int appointmentId, String patientName, String patientAddress, String patientTelephoneNumber, Treatment treatment){
         this.appointmentId = appointmentId;
         this.patient = new Patient(patientName, patientAddress, patientTelephoneNumber);
@@ -22,6 +25,7 @@ public class Appointment implements Observable, Cloneable{
         this.isPaid = false;
     }
 
+    //Getters
     public int getAppointmentId() {
         return appointmentId;
     }
@@ -46,6 +50,7 @@ public class Appointment implements Observable, Cloneable{
         return isPaid;
     }
 
+    //Setters
     public void setPatient(String name, String address, String telephoneNumber) {
         this.patient.setName(name);
         this.patient.setAddress(address);
@@ -64,12 +69,13 @@ public class Appointment implements Observable, Cloneable{
         this.time = time;
     }
 
-
+    //Method to set the payment as true
     public void pay(){
         this.isPaid = true;
         notifyObservers();
     }
 
+    //Methods as an Observable
     @Override
     public void addObserver(Observer observer) {
         observers.add(observer);
@@ -87,6 +93,7 @@ public class Appointment implements Observable, Cloneable{
         }
     }
 
+    //Methods for implementing Memento
     @Override
     public Appointment clone() throws CloneNotSupportedException{
         Appointment cloned = (Appointment) super.clone();

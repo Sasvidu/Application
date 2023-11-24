@@ -4,10 +4,16 @@ import javax.swing.*;
 
 public class SearchAppointmentCommand implements Command<String[]>{
 
+    //Objects from classes that the command interacts with
     private AppointmentIdCollection appointments = AppointmentIdCollection.getAppointmentIdCollection();
+
+    //Data variable for storing the appointment Id to be read
     private String appointmentId;
+
+    //Variable for storing the return value
     private String[] result;
 
+    //Parameterized Constructor
     public SearchAppointmentCommand(String appointmentId){
         this.appointmentId = appointmentId;
     }
@@ -39,6 +45,7 @@ public class SearchAppointmentCommand implements Command<String[]>{
         return result;
     }
 
+    //Methods for implementing Memento
     @Override
     public void undo(){
         MementoManager.getMementoManager().undo();

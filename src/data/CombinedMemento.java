@@ -4,14 +4,17 @@ import java.util.Objects;
 
 public class CombinedMemento implements Memento{
 
+    //State variables
     private final AppointmentIdCollection appointmentsState;
     private final ScheduleCollection schedulesState;
 
+    //Parameterized constructor for initializing the state variables
     protected CombinedMemento(AppointmentIdCollection appointments, ScheduleCollection schedules) throws CloneNotSupportedException {
         this.appointmentsState = appointments.clone();
         this.schedulesState = schedules.clone();
     }
 
+    //Getters
     @Override
     public AppointmentIdCollection getAppointments() {
         return this.appointmentsState;
@@ -22,6 +25,7 @@ public class CombinedMemento implements Memento{
         return this.schedulesState;
     }
 
+    //Methods to check whether two mementos are identical
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;

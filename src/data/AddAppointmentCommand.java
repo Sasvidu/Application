@@ -1,10 +1,9 @@
 package data;
 
-//Command to handle the click event of the appointment button.
+//Command to handle the click event of the add appointment button.
 //It takes in parameters for appointment details and the date during which the appointment is to be placed. The time will be the time calculated by the system via the check date method.
 
 import com.sasvidu.InsertManager;
-
 import javax.swing.*;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -13,22 +12,27 @@ import java.util.Random;
 
 public class AddAppointmentCommand implements Command<String>{
 
+    //Objects from classes that the command interacts with
     private ScheduleCollection schedules = ScheduleCollection.getScheduleCollection();
     private AppointmentIdCollection appointments = AppointmentIdCollection.getAppointmentIdCollection();
     private TreatmentFactory treatmentFactory = TreatmentFactory.getTreatmentFactory();
     private InsertManager insertManager = InsertManager.getInsertManager();
 
+    //Mementos to be created
     private CombinedMemento beforeMemento;
     private CombinedMemento afterMemento;
 
+    //Data of the appointment
     private Date selectedDate;
     private String patientName;
     private String patientAddress;
     private String patientTelephoneNumber;
     private String treatmentType;
 
+    //Variable to store the return value
     private String result;
 
+    //Error messages
     private final String retrievalError = "Retrieval Error";
     private final String nullError = "Null Error";
     private final String unavailableError = "Unavailable Error";
@@ -36,6 +40,7 @@ public class AddAppointmentCommand implements Command<String>{
     private final String error = "Error";
     private final String success = "Success";
 
+    //Parameterized constructor to initialize the variable
     public AddAppointmentCommand(Date selectedDate, String patientName, String patientAddress, String patientTelephoneNumber, String treatmentType){
         this.selectedDate = selectedDate;
         this.patientName = patientName;
@@ -82,7 +87,7 @@ public class AddAppointmentCommand implements Command<String>{
 
     //Private method to represent the common operations for inserting an appointment into the data structures, called by the addAppointment method
     private String insertAppointment(String patientName, String patientAddress, String patientTelephoneNumber, String treatmentType, LocalDate date) throws CloneNotSupportedException {
-        //Obtain the schedule for the dat
+        //Obtain the schedule for the date
         Schedule schedule = schedules.getSchedule(date);
         //Get the object representing the treatment required
         Treatment treatment = treatmentFactory.getTreatment(treatmentType);
@@ -114,6 +119,7 @@ public class AddAppointmentCommand implements Command<String>{
         return id;
     }
 
+    //Methods for implementing Memento
     @Override
     public void undo(){
         MementoManager.getMementoManager().undo();

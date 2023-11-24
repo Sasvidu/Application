@@ -12,17 +12,22 @@ import java.util.Date;
 
 public class CheckDateCommand implements Command<String>{
 
+    //Objects from classes that the command interacts with
     private ScheduleCollection schedules = ScheduleCollection.getScheduleCollection();
     private AppointmentIdCollection appointments = AppointmentIdCollection.getAppointmentIdCollection();
     private TreatmentFactory treatmentFactory = TreatmentFactory.getTreatmentFactory();
 
+    //Date
     private Date selectedDate;
     private String treatmentType;
 
+    //Variable to store the return value
     private String result;
 
+    //List of days on which schedules are unavailable
     private String[] unavailableDays = {"TUESDAY", "THURSDAY", "FRIDAY"};
 
+    //List of starting and ending times of schedules for specific days
     private final LocalTime mondayStartTime = LocalTime.parse("18:00");
     private final LocalTime wednesdayStartTime = LocalTime.parse("18:00");
     private final LocalTime saturdayStartTime = LocalTime.parse("15:00");
@@ -33,6 +38,7 @@ public class CheckDateCommand implements Command<String>{
     private final LocalTime saturdayEndTime = LocalTime.parse("22:00");
     private final LocalTime sundayEndTime = LocalTime.parse("22:00");
 
+    //Error messages
     private final String retrievalError = "Retrieval Error";
     private final String nullError = "Null Error";
     private final String unavailableError = "Unavailable Error";
@@ -40,6 +46,7 @@ public class CheckDateCommand implements Command<String>{
     private final String error = "Error";
     private final String success = "Success";
 
+    //Parameterized constructor
     public CheckDateCommand(Date selectedDate, String treatmentType){
         this.selectedDate = selectedDate;
         this.treatmentType = treatmentType;
@@ -143,14 +150,10 @@ public class CheckDateCommand implements Command<String>{
     }
 
     @Override
-    public void undo(){
-        //MementoManager.getMementoManager().undo();
-    }
+    public void undo(){}
 
     @Override
-    public void redo(){
-        //MementoManager.getMementoManager().redo();
-    }
+    public void redo(){}
 
 
 }

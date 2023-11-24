@@ -6,6 +6,7 @@ import java.util.LinkedList;
 
 public class MondaySchedule extends Schedule{
 
+    //Parameterized Constructor
     protected MondaySchedule(LocalDate date, LocalTime startTime, LocalTime endTime){
         this.date = date;
         this.startTime = this.availableTime = startTime;

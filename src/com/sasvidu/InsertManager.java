@@ -1,10 +1,8 @@
 package com.sasvidu;
 
 import data.*;
-import forms.HomeFrame;
 
 import javax.swing.*;
-import java.time.*;
 import java.util.*;
 
 public class InsertManager {
@@ -16,6 +14,7 @@ public class InsertManager {
     //private field to store the current command
     private Command<?> currentCommand;
 
+    //Error messages
     private final String warningTxt = "Warning!";
     private final String errorTxt = "Error!";
     private final String nullErrorMessage = "Please select a date to check availability.";
@@ -39,21 +38,25 @@ public class InsertManager {
         return instance;
     }
 
+    //Method to schedule a command to be executed through InsertManager, while adding it to the command history in HomeManager
     public <T> void setCommand(Command<T> command){
         currentCommand = command;
         HomeManager.getHomeManager().addCommand(currentCommand);
     }
 
+    //Method to schedule a command to be executed though InsertManager without adding it to the command history.
     public <T> void setCheckCommand(Command<T> command){
         currentCommand = command;
     }
 
+    //Method to execute a command through InsertManager
     public void executeCommand(){
         if(this.currentCommand != null){
             currentCommand.execute();
         }
     }
 
+    //Method to handle the event of clicking the "Check Date" button
     public void checkDate(Date selectedDate, String treatmentType) {
 
         Command<String> validateCommand = new CheckDateCommand(selectedDate, treatmentType);
@@ -83,7 +86,7 @@ public class InsertManager {
 
     }
 
-
+    //Method to handle the event of cliking the "Add Appointment" button
     public void addAppointment(Date selectedDate, String patientName, String patientAddress, String patientTelephoneNumber, String treatmentType, JFrame insertFrame) {
 
         //Call the checkDate function to see whether there is time for the appointment to be reserved for the requested date, and get the available time if there is

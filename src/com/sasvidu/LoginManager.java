@@ -27,10 +27,8 @@ public class LoginManager {
 
     //Login method, called upon button click on the login form
     public boolean login(String username, String password){
-
         //Iterate over users using the iterator pattern
         Iterator userIterator = users.getIterator();
-
         while(userIterator.hasNext()){
             User currentUser = (User) userIterator.next();
             String currentUsername = currentUser.getUsername();
@@ -46,7 +44,6 @@ public class LoginManager {
         }
         //Return a false message to indicate login was not successful
         return false;
-
     }
 
 }

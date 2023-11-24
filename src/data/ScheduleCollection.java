@@ -9,13 +9,19 @@ import java.util.Iterator;
 
 public class ScheduleCollection implements Observable, Cloneable{
 
+    //Private class variable to store the unique instance
     private static ScheduleCollection instance;
+    //Sorted Data Structure (Tree Map) to store the list of schedules
     private TreeMap<LocalDate, Schedule> schedules = new TreeMap<>();
+    //Objects of classes that the class interacts with
     private ScheduleFactory scheduleFactory = ScheduleFactory.getScheduleFactory();
+    //List of observers
     private LinkedList<Observer> observers = new LinkedList<>();
 
+    //Private constructor
     private ScheduleCollection(){}
 
+    //Public method to retrieve the only instance
     public static ScheduleCollection getScheduleCollection(){
         if(instance == null){
             instance = new ScheduleCollection();
@@ -23,12 +29,18 @@ public class ScheduleCollection implements Observable, Cloneable{
         return instance;
     }
 
+    //Method to create a new schedule in the collection
     public void addSchedule(LocalDate date){
         try {
+            //Check if a schedule has already been created for that date
             if (!hasSchedule(date)) {
+                //Create the schedule from the factory
                 Schedule schedule = scheduleFactory.getSchedule(date.toString());
+                //Ensure the schedule has been created properly
                 if(schedule != null) {
+                    //Add it to the Tree Map
                     schedules.put(date, schedule);
+                    //Notify the HomeFrame
                     notifyObservers();
                 } else {
                     throw new Exception("This date does not allow a schedule to be created!");
@@ -42,17 +54,17 @@ public class ScheduleCollection implements Observable, Cloneable{
         }
     }
 
-    //Overloading
+    //Methods to check whether a schedule has been created for a day
     public boolean hasSchedule(LocalDate date){
         return schedules.containsKey(date);
     }
 
-    //Overloading
     public boolean hasSchedule(String date){
         LocalDate properDate = LocalDate.parse(date);
         return schedules.containsKey(properDate);
     }
 
+    //Getters
     public Schedule getSchedule(LocalDate date){
         return schedules.get(date);
     }
@@ -61,11 +73,13 @@ public class ScheduleCollection implements Observable, Cloneable{
         return schedules;
     }
 
+    //Method to obtain an iterator
     public Iterator getIterator() {
         Set set = schedules.entrySet();
         return set.iterator();
     }
 
+    //Methods as an Observable
     @Override
     public void addObserver(Observer observer) {
         observers.add(observer);
@@ -83,6 +97,7 @@ public class ScheduleCollection implements Observable, Cloneable{
         }
     }
 
+    //Methods for implementing Memento
     public CombinedMemento saveStateToMemento() throws CloneNotSupportedException {
         return MementoManager.getMementoManager().createMemento();
     }
@@ -121,10 +136,5 @@ public class ScheduleCollection implements Observable, Cloneable{
     public int hashCode() {
         return Objects.hash(schedules);
     }
-
-//    public Iterator getKeyIterator() {
-//        Set<LocalDate> set = schedules.keySet();
-//        return set.iterator();
-//    }
 
 }

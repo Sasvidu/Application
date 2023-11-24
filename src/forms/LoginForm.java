@@ -13,23 +13,24 @@ public class LoginForm extends JFrame implements ActionListener {
 
     //Private variable for storing the singular instance
     private static LoginForm instance;
+
+    //Interactive Components
     private JButton loginButton;
     private JTextField usernameTextField;
     private JPasswordField passwordTextField;
     private JLabel invalidLoginLabel;
 
-    //Declare dimensions of the JFrame window:
+    //Declare dimensions of the JFrame window
     static final int width = 420;
     static final int height = 540;
 
     //Private Constructor
     private LoginForm() {
 
-        //Borders:
-        //Border loginButtonBorder = BorderFactory.createLineBorder(Color.darkGray, 1);
+        //Borders
         Border loginButtonBorder = BorderFactory.createEtchedBorder();
 
-        //Labels:
+        //Labels
         JLabel usernameLabel = new JLabel("Username: "); //Create the label for username.
         usernameLabel.setForeground(new Color(255, 255, 255)); //Set color to white
         usernameLabel.setFont(new Font("Montserrat", Font.PLAIN, 20)); //Set Font style.
@@ -51,14 +52,14 @@ public class LoginForm extends JFrame implements ActionListener {
         invalidLoginLabel.setHorizontalAlignment(JLabel.CENTER); //Center the label horizontally within its space.
         invalidLoginLabel.setBounds(5, 420, 400, 20); //Place the label within the form.
 
-        //Text Fields:
+        //Text Fields
         usernameTextField = new JTextField();
         usernameTextField.setBounds(230, 105, 120, 30);
 
         passwordTextField = new JPasswordField();
         passwordTextField.setBounds(230, 165, 120, 30);
 
-        //Button:
+        //Button
         loginButton = new JButton(); //Create the login button.
         loginButton.setText("Login"); //Set its text.
         loginButton.setFont(new Font("Montserrat", Font.BOLD, 16)); //Set Font style.
@@ -70,7 +71,7 @@ public class LoginForm extends JFrame implements ActionListener {
         loginButton.setBounds(160, 350, 100, 40); //Place the button within the form.
         loginButton.addActionListener(this); //Add an event listener for a clicking event.
 
-        //Window:
+        //Window
         this.setTitle("Login"); //Sets the title of the form to 'Login'.
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //Change the action of clicking the close icon to Exiting instead of Hiding.
         this.setResizable(false);
@@ -92,31 +93,27 @@ public class LoginForm extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-
         //If login button was clicked:
         if(e.getSource() == loginButton){
             var loginManager = LoginManager.getLoginManager();
             String username = usernameTextField.getText();
             String password = passwordTextField.getText();
             if(loginManager.login(username, password)){
-                //If login is successful:
-                removeLoginForm(); // Clear the static variable.
+                //If login is successful, clear the static variable:
+                removeLoginForm();
             }else{
-                //If login fails:
-                invalidLoginLabel.setVisible(true); //Display the error message through the label.
+                //If login fails, display the error message:
+                invalidLoginLabel.setVisible(true);
           }
         }
-
     }
 
     //Public method to retrieve the single instance
     public static LoginForm getLoginForm(){
-
         if(instance == null){
             instance = new LoginForm();
         }
         return instance;
-
     }
 
     //Private method to destroy the single instance

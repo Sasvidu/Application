@@ -13,17 +13,19 @@ import java.util.LinkedList;
 
 public class HomeFrame extends JFrame implements ActionListener, Observer {
 
-    //Private variable for storing the singular instance:
+    //Private variable for storing the singular instance
     private static HomeFrame instance;
+
+    //Other objects that the class interacts with
     private final HomeManager homeManager = HomeManager.getHomeManager();
     private LinkedList<Observable> observables = new LinkedList<>();
 
-    //Table:
+    //Table
     private TableModel appointmentsTableModel;
     private JTable appointmentsTable;
     private JScrollPane appointmentsTableScrollPane;
 
-    //Buttons:
+    //Buttons
     private JButton searchButton;
     private JButton viewButton;
     private JButton insertButton;
@@ -33,7 +35,7 @@ public class HomeFrame extends JFrame implements ActionListener, Observer {
     private JButton undoButton;
     private JButton redoButton;
 
-    // Fields:
+    // Fields
     private JTextField appointmentIdFieldForSearch;
     private JTextField patientNameFieldForSearch;
     private JTextField appointmentIdField;
@@ -45,11 +47,11 @@ public class HomeFrame extends JFrame implements ActionListener, Observer {
     private JRadioButton appointmentNoPaidButton;
     private ButtonGroup appointmentIsPaidButtonGroup;
 
-    //Data:
+    //Table data
     private String[][] data = getData();
     private String column[] = {"Date", "Time", "App. Id", "Name", "Address", "Tel. No", "Treatment", "Paid"};
 
-    //Declare HomeFrame Dimensions:
+    //Declare HomeFrame Dimensions
     static final int width = 1550;
     static final int height = 850;
     static final int panelWidth = 600;
@@ -58,9 +60,13 @@ public class HomeFrame extends JFrame implements ActionListener, Observer {
     // Private Constructor
     private HomeFrame() {
 
+        //Register the collection of schedules as an observable
         addObservable(ScheduleCollection.getScheduleCollection());
+
+        //Theme colors
         Color homeOrange = new Color(0xB76D68);
 
+        //Dimensions of components
         int labelWidth = 200;
         int labelHeight = 20;
         int labelX = 70;
@@ -76,7 +82,7 @@ public class HomeFrame extends JFrame implements ActionListener, Observer {
 
         int formButtonMargin = 20;
 
-        // Panels:
+        // Panels
         JPanel searchPanel = new JPanel();
         searchPanel.setBackground(new Color(0xFF8F73));
         searchPanel.setBounds(0, 0, panelWidth, searchPanelHeight);
@@ -87,7 +93,7 @@ public class HomeFrame extends JFrame implements ActionListener, Observer {
         formPanel.setBounds(0, searchPanelHeight, panelWidth, height - searchPanelHeight);
         formPanel.setLayout(null);
 
-        // Table:
+        // Table
         appointmentsTableModel = new DefaultTableModel(data, column);
         appointmentsTable = new JTable(appointmentsTableModel);
         appointmentsTable.setRowHeight(30);
@@ -151,7 +157,7 @@ public class HomeFrame extends JFrame implements ActionListener, Observer {
         appointmentYesPaidButton.setBounds(textFieldX, 355, textFieldWidth / 2, textFieldHeight);
         appointmentNoPaidButton.setBounds(textFieldX + (textFieldWidth / 2), 355, textFieldWidth / 2, textFieldHeight);
 
-        // Buttons:
+        // Buttons
         searchButton = new JButton();
         searchButton.setText("SEARCH");
         searchButton.setFont(new Font("Montserrat", Font.PLAIN, 14));
@@ -232,7 +238,7 @@ public class HomeFrame extends JFrame implements ActionListener, Observer {
         redoButton.setBounds(((panelWidth / 2) + 10), 490, formButtonWidth, formButtonHeight);
         redoButton.addActionListener(this);
 
-        // Window:
+        // Window
         this.setTitle("Home");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setSize(width, height);
@@ -282,6 +288,7 @@ public class HomeFrame extends JFrame implements ActionListener, Observer {
 
         if(e.getSource() == insertButton){
 
+            //Handle Appointment Insert
             String patientName = patientNameField.getText();
             String patientAddress = patientAddressField.getText();
             String patientTelephoneNumber = patientPhoneNumberField.getText();
@@ -290,6 +297,7 @@ public class HomeFrame extends JFrame implements ActionListener, Observer {
 
         }else if(e.getSource() == searchButton){
 
+            //Handle Appointment Search by Id
             String appointmentId = appointmentIdFieldForSearch.getText();
             Command<String[]> searchCommand = new SearchAppointmentCommand(appointmentId);
             homeManager.setCommandWithoutRecording(searchCommand);
@@ -312,11 +320,13 @@ public class HomeFrame extends JFrame implements ActionListener, Observer {
 
         }else if(e.getSource() == viewButton){
 
+            //Handle Appointment Search by Patient Name
             String patientName = patientNameFieldForSearch.getText();
             homeManager.view(patientName);
 
         }else if(e.getSource() == editButton){
 
+            //Handle Appointment Edit
             String appointmentId = appointmentIdField.getText();
             String patientName = patientNameField.getText();
             String patientAddress = patientAddressField.getText();
@@ -328,6 +338,7 @@ public class HomeFrame extends JFrame implements ActionListener, Observer {
 
         }else if(e.getSource() == payButton){
 
+            //Handle Appointment Payment
             String appointmentId = appointmentIdField.getText();
             Command payCommand = new PayAppointmentCommand(appointmentId);
             homeManager.setCommand(payCommand);
@@ -335,6 +346,7 @@ public class HomeFrame extends JFrame implements ActionListener, Observer {
 
         }else if(e.getSource() == invoiceButton){
 
+            //Handle Appointment Invoice Retrieval
             String appointmentId = appointmentIdField.getText();
             Command viewCommand = new ViewInvoiceCommand(appointmentId);
             homeManager.setCommandWithoutRecording(viewCommand);
@@ -342,10 +354,12 @@ public class HomeFrame extends JFrame implements ActionListener, Observer {
 
         }else if(e.getSource() == undoButton){
 
+            //Handle Undo Event
             homeManager.undo();
 
         }else if(e.getSource() == redoButton){
 
+            //Handle Redo Event
             homeManager.redo();
 
         }
@@ -354,45 +368,27 @@ public class HomeFrame extends JFrame implements ActionListener, Observer {
 
     // Public method to retrieve the single instance
     public static HomeFrame getHomeFrame() {
-
         if (instance == null) {
             instance = new HomeFrame();
         }
         return instance;
-
     }
 
+    //Method to see if the yes option for payment is selected
     private boolean isPaid(){
-
         if(appointmentYesPaidButton.isSelected()){
             return true;
         }
         return false;
-
     }
 
-    private String[][] getData(){
-
-        Command<String[][]> readDataCommand = new ReadAppointmentsCommand();
-        homeManager.setCommandWithoutRecording(readDataCommand);
-        homeManager.executeCommand();
-        String[][] data = readDataCommand.getResult();
-        return data;
-
-    }
-
-    private void updateTable(String[][] newData) {
-
-        DefaultTableModel model = (DefaultTableModel) appointmentsTable.getModel();
-        model.setDataVector(newData, column);
-
-    }
-
+    //Method to add an observable to the Home Frame
     public void addObservable(Observable observable){
         observables.add(observable);
         observable.addObserver(this);
     }
 
+    //Update method of an observer, that refreshes the UI
     @Override
     public void update(Observable observable) {
         String[][] newData = getData();
@@ -416,5 +412,21 @@ public class HomeFrame extends JFrame implements ActionListener, Observer {
         appointmentYesPaidButton.repaint();
         appointmentNoPaidButton.repaint();
     }
+
+    //Method to retrieve data for the table
+    private String[][] getData(){
+        Command<String[][]> readDataCommand = new ReadAppointmentsCommand();
+        homeManager.setCommandWithoutRecording(readDataCommand);
+        homeManager.executeCommand();
+        String[][] data = readDataCommand.getResult();
+        return data;
+    }
+
+    //Method to update the table data
+    private void updateTable(String[][] newData) {
+        DefaultTableModel model = (DefaultTableModel) appointmentsTable.getModel();
+        model.setDataVector(newData, column);
+    }
+
 
 }

@@ -4,16 +4,19 @@ import java.util.Objects;
 
 public class Patient implements Cloneable{
 
+    //Data Attributes
     private String name;
     private String address;
     private String telephoneNumber;
 
+    //Parameterized constructor for initializing the variables
     protected Patient(String name, String address, String telephoneNumber){
         this.name = name;
         this.address = address;
         this.telephoneNumber = telephoneNumber;
     }
 
+    //Getters
     public String getName() {
         return name;
     }
@@ -26,6 +29,7 @@ public class Patient implements Cloneable{
         return telephoneNumber;
     }
 
+    //Setters
     public void setName(String name) {
         this.name = name;
     }
@@ -38,6 +42,7 @@ public class Patient implements Cloneable{
         this.telephoneNumber = telNo;
     }
 
+    //Methods for implementing Memento
     @Override
     public Patient clone() throws CloneNotSupportedException {
         Patient cloned = (Patient) super.clone();

@@ -11,31 +11,32 @@ import java.time.format.DateTimeFormatter;
 
 public class Invoice extends JFrame {
 
+    //Attributes
     private LocalDate paymentDate;
     private LocalTime paymentTime;
     private Appointment appointment;
 
+    //Colors
     private final Color fontColor = new Color(0, 0, 0);
     private final Color backgroundColor = new Color(0xDFF2FF);
     private final Font font = new Font("Montserrat", Font.PLAIN, 20);
 
+    //Dimensions
     private final int labelWidth = 200;
     private final int labelHeight = 50;
     private final int labelX = 50;
     private final int labelValueX = labelX + labelWidth + 50;
-
-    //Declare dimensions of the JFrame window:
     static final int width = 540;
     static final int height = 740;
 
     public Invoice(Appointment appointment){
 
-        //Initialization:
+        //Initialization
         this.appointment = appointment;
         this.paymentDate = LocalDate.now();
         this.paymentTime = LocalTime.now();
 
-        //Labels:
+        //Labels
         JLabel dateLabel = new JLabel("Date: ");
         dateLabel.setForeground(fontColor);
         dateLabel.setFont(font);
@@ -150,8 +151,7 @@ public class Invoice extends JFrame {
         feeValueLabel.setHorizontalAlignment(JLabel.CENTER);
         feeValueLabel.setBounds(labelValueX, 90 + (7 * (labelHeight + 10)), labelWidth, labelHeight);
 
-
-        //Window:
+        //Window
         this.setTitle("Invoice");
         this.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         this.setResizable(false);
@@ -180,11 +180,13 @@ public class Invoice extends JFrame {
 
         this.setVisible(true);
 
+        //Add the invoice to the invoice collection
         int appointmentId = appointment.getAppointmentId();
         InvoiceCollection.getInvoiceCollection().addInvoice(appointmentId, this);
 
     }
 
+    //Getter for the appointment
     public Appointment getAppointment(){
         return this.appointment;
     }

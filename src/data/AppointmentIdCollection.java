@@ -7,11 +7,16 @@ import java.util.Objects;
 public class AppointmentIdCollection implements Cloneable {
 
     //This class is used to hold a hashmap of all the appointments allocated to schedule. This allows the appointments to be accessed through their ID with a time complexity of O(1).
+
+    //Private class variable to store the unique instance
     private static AppointmentIdCollection instance;
+    //Data Structure for storing appointments
     private HashMap<Integer, Appointment> appointments = new HashMap<>();
 
+    //Private constructor
     private AppointmentIdCollection(){}
 
+    //Public constructor to retrieve the unique instance
     public static AppointmentIdCollection getAppointmentIdCollection(){
         if(instance == null){
             instance = new AppointmentIdCollection();
@@ -19,22 +24,26 @@ public class AppointmentIdCollection implements Cloneable {
         return instance;
     }
 
-    public Appointment getAppointment(int id){
-        return appointments.get(id);
-    }
-
+    //Methods to check whether the list contains an appointment with a particular id
     public boolean hasId(int id){
         return appointments.containsKey(id);
+    }
+
+    //Method to add ann appointment to the list
+    public void addAppointment(int id, Appointment appointment){
+        appointments.put(id, appointment);
+    }
+
+    //Getters
+    public Appointment getAppointment(int id){
+        return appointments.get(id);
     }
 
     public HashMap<Integer, Appointment> getAppointments(){
         return appointments;
     }
 
-    public void addAppointment(int id, Appointment appointment){
-        appointments.put(id, appointment);
-    }
-
+    //Methods for implementing Memento
     public CombinedMemento saveStateToMemento() throws CloneNotSupportedException {
         return MementoManager.getMementoManager().createMemento();
     }
