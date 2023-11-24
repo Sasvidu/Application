@@ -25,6 +25,7 @@ public class HomeFrame extends JFrame implements ActionListener, Observer {
 
     //Buttons:
     private JButton searchButton;
+    private JButton viewButton;
     private JButton insertButton;
     private JButton payButton;
     private JButton editButton;
@@ -34,6 +35,7 @@ public class HomeFrame extends JFrame implements ActionListener, Observer {
 
     // Fields:
     private JTextField appointmentIdFieldForSearch;
+    private JTextField patientNameFieldForSearch;
     private JTextField appointmentIdField;
     private JTextField patientNameField;
     private JTextField patientAddressField;
@@ -96,6 +98,7 @@ public class HomeFrame extends JFrame implements ActionListener, Observer {
 
         // Labels
         JLabel appointmentIdLabelForSearch = new JLabel("Appointment ID:");
+        JLabel patientNameLabelForSearch = new JLabel("Patient Name:");
         JLabel appointmentIdLabel = new JLabel("Appointment ID:");
         JLabel patientNameLabel = new JLabel("Patient Name:");
         JLabel patientAddressLabel = new JLabel("Patient Address:");
@@ -107,7 +110,8 @@ public class HomeFrame extends JFrame implements ActionListener, Observer {
         appointmentIdLabelForSearch.setHorizontalAlignment(JLabel.CENTER);
 
         // Set bounds for labels
-        appointmentIdLabelForSearch.setBounds((panelWidth - searchButtonWidth) / 2, (searchPanelHeight * 2 / 10), searchButtonWidth, searchButtonHeight);
+        appointmentIdLabelForSearch.setBounds((((panelWidth - searchButtonWidth) / 2) - searchButtonWidth), (searchPanelHeight * 2 / 10), searchButtonWidth, searchButtonHeight);
+        patientNameLabelForSearch.setBounds((((panelWidth - searchButtonWidth) / 2) + searchButtonWidth), (searchPanelHeight * 2 / 10), searchButtonWidth, searchButtonHeight);
         appointmentIdLabel.setBounds(labelX, 50, labelWidth, labelHeight);
         patientNameLabel.setBounds(labelX, 110, labelWidth, labelHeight);
         patientAddressLabel.setBounds(labelX, 170, labelWidth, labelHeight);
@@ -119,6 +123,7 @@ public class HomeFrame extends JFrame implements ActionListener, Observer {
         String[] treatmentOptions = {"Cleaning" , "Whitening", "Filling", "Nerve Filling", "Root Canal Therapy"};
 
         appointmentIdFieldForSearch = new JTextField();
+        patientNameFieldForSearch = new JTextField();
         appointmentIdField = new JTextField();
         patientNameField = new JTextField();
         patientAddressField = new JTextField();
@@ -136,7 +141,8 @@ public class HomeFrame extends JFrame implements ActionListener, Observer {
         appointmentIsPaidButtonGroup.add(appointmentNoPaidButton);
 
         // Set bounds for text fields
-        appointmentIdFieldForSearch.setBounds((panelWidth - searchButtonWidth) / 2, (searchPanelHeight * 5 / 10), searchButtonWidth, searchButtonHeight);
+        appointmentIdFieldForSearch.setBounds((((panelWidth - searchButtonWidth) / 2) - searchButtonWidth), (searchPanelHeight * 5 / 10), searchButtonWidth, searchButtonHeight);
+        patientNameFieldForSearch.setBounds((((panelWidth - searchButtonWidth) / 2) + searchButtonWidth - 50), (searchPanelHeight * 5 / 10), searchButtonWidth, searchButtonHeight);
         appointmentIdField.setBounds(textFieldX, 45, textFieldWidth, textFieldHeight);
         patientNameField.setBounds(textFieldX, 105, textFieldWidth, textFieldHeight);
         patientAddressField.setBounds(textFieldX, 165, textFieldWidth, textFieldHeight);
@@ -153,8 +159,18 @@ public class HomeFrame extends JFrame implements ActionListener, Observer {
         searchButton.setHorizontalAlignment(JButton.CENTER);
         searchButton.setFocusable(false);
         searchButton.setBackground(Color.lightGray);
-        searchButton.setBounds((panelWidth - searchButtonWidth) / 2, (searchPanelHeight * 7 / 10), searchButtonWidth, searchButtonHeight);
+        searchButton.setBounds((((panelWidth - searchButtonWidth) / 2) - searchButtonWidth), (searchPanelHeight * 7 / 10), searchButtonWidth, searchButtonHeight);
         searchButton.addActionListener(this);
+
+        viewButton = new JButton();
+        viewButton.setText("APPOINTMENTS");
+        viewButton.setFont(new Font("Montserrat", Font.PLAIN, 14));
+        viewButton.setVerticalAlignment(JButton.CENTER);
+        viewButton.setHorizontalAlignment(JButton.CENTER);
+        viewButton.setFocusable(false);
+        viewButton.setBackground(Color.lightGray);
+        viewButton.setBounds((((panelWidth - searchButtonWidth) / 2) + searchButtonWidth - 50), (searchPanelHeight * 7 / 10), searchButtonWidth, searchButtonHeight);
+        viewButton.addActionListener(this);
 
         insertButton = new JButton();
         insertButton.setText("INSERT");
@@ -233,6 +249,9 @@ public class HomeFrame extends JFrame implements ActionListener, Observer {
         searchPanel.add(appointmentIdLabelForSearch);
         searchPanel.add(appointmentIdFieldForSearch);
         searchPanel.add(searchButton);
+        searchPanel.add(patientNameLabelForSearch);
+        searchPanel.add(patientNameFieldForSearch);
+        searchPanel.add(viewButton);
 
         formPanel.add(appointmentIdLabel);
         formPanel.add(patientNameLabel);
@@ -290,6 +309,11 @@ public class HomeFrame extends JFrame implements ActionListener, Observer {
                     appointmentNoPaidButton.setSelected(true);
                 }
             }
+
+        }else if(e.getSource() == viewButton){
+
+            String patientName = patientNameFieldForSearch.getText();
+            homeManager.view(patientName);
 
         }else if(e.getSource() == editButton){
 

@@ -1,12 +1,9 @@
 package com.sasvidu;
 
 import data.*;
-import forms.HomeFrame;
 import forms.InsertFrame;
-import forms.Invoice;
-import javax.swing.*;
-import java.time.LocalDate;
-import java.util.Map;
+import forms.ViewAppointmentsFrame;
+
 import java.util.Stack;
 
 public class HomeManager {
@@ -68,6 +65,10 @@ public class HomeManager {
     //Method to handle the click event of the insert button
     public void insert(String patientName, String patientAddress, String patientTelephoneNumber, String treatmentType){
         new InsertFrame(patientName, patientAddress, patientTelephoneNumber, treatmentType);
+    }
+
+    public void view(String patientName){
+        new ViewAppointmentsFrame(patientName);
     }
 
     protected void addCommand(Command<?> command){

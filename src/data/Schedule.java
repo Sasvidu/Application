@@ -97,6 +97,33 @@ public abstract class Schedule implements Observable, Cloneable{
         return array;
     }
 
+    public String[][] getAppointmentsArrayForPatient(String patientName) {
+        // Use a dynamic list instead of a fixed-size array
+        List<String[]> list = new ArrayList<>();
+
+        for (Appointment appointment : listOfAppointments) {
+            String currentPatientName = appointment.getPatient().getName();
+            if (currentPatientName.matches(patientName)) {
+                // Create an array for each appointment
+                String[] appointmentArray = new String[8];
+                appointmentArray[0] = appointment.getDate().toString();
+                appointmentArray[1] = appointment.getTime().toString();
+                appointmentArray[2] = String.valueOf(appointment.getAppointmentId());
+                appointmentArray[3] = appointment.getPatient().getName();
+                appointmentArray[4] = appointment.getPatient().getAddress();
+                appointmentArray[5] = appointment.getPatient().getTelephoneNumber();
+                appointmentArray[6] = appointment.getTreatment().getTreatmentType();
+                appointmentArray[7] = String.valueOf(appointment.isPaid());
+
+                // Add the array to the list
+                list.add(appointmentArray);
+            }
+        }
+
+        // Convert the list to a 2D array before returning
+        return list.toArray(new String[0][0]);
+    }
+
     @Override
     public void addObserver(Observer observer) {
         observers.add(observer);
